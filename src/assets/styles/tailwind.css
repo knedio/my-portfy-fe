@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+@import './templates/nebula.scss';
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #4b5563 transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+    border-radius: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+}
