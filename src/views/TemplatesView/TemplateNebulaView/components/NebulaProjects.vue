@@ -28,7 +28,7 @@ const onGetTechs = (value: Project) => {
             <img
               :src="project.image"
               :alt="project.title"
-              class="full h-40 sm:h-48 object-cover transform transition-transform duration-500 group-hover:scale-110"
+              class="w-full h-40 sm:h-48 object-cover transform transition-transform duration-500 group-hover:scale-110"
             />
             <div
               class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end"
