@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Field } from 'vee-validate'
+import { Field } from 'vee-validate';
 
 defineProps({
   name: {
@@ -22,15 +22,15 @@ defineProps({
     type: Number,
     default: 4,
   },
-})
+});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formatError = (error: any): string => {
   if (Array.isArray(error)) {
-    return error[0]
+    return error[0];
   }
-  return error
-}
+  return error;
+};
 </script>
 
 <template>
@@ -53,7 +53,7 @@ const formatError = (error: any): string => {
           class="w-full p-2 rounded bg-gray-800 border border-gray-700"
         />
       </template>
-      <p v-if="errors && meta.touched" class="text-red-400 text-sm mt-1">
+      <p v-if="formatError(errors) && meta.touched" class="text-red-400 text-sm mt-1">
         {{ formatError(errors) }}
       </p>
     </Field>

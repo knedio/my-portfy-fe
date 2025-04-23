@@ -130,8 +130,6 @@ onMounted(async () => {
 
 <template>
   <div class="">
-    <h1 class="text-3xl font-bold mb-6">Portfolio Details</h1>
-
     <div id="personal-info-form" class="space-y-4 mb-10">
       <div class="flex gap-4">
         <FormInput

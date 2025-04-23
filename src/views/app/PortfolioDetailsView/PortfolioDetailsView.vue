@@ -24,19 +24,19 @@ onMounted(async () => {});
 
 <template>
   <div class="portfolio-container flex gap-8 px-6 py-4 overflow-hidden">
-    <div class="w-1/2 overflow-y-auto pr-4">
+    <div class="w-1/2 overflow-y-auto">
       <FormTabs
         v-model:activeTab="activeTab"
         :tabs="[
-          { label: 'Details', key: 'details' },
+          { label: 'Portfolio Details', key: 'details' },
           { label: 'Template', key: 'template' },
         ]"
       >
         <template v-slot="slotProps">
-          <div v-if="slotProps?.activeTab === 'details'">
+          <div v-if="slotProps?.activeTab === 'details'" class="px-3">
             <PortfolioDetailsTab @update="onUpdatePreview" />
           </div>
-          <div v-else-if="slotProps?.activeTab === 'template'">
+          <div v-else-if="slotProps?.activeTab === 'template'" class="px-3">
             <PortfolioTemplateTab />
           </div>
         </template>
