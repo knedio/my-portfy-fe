@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { Save } from 'lucide-vue-next';
 import { getAllTemplates } from '@/services/templateService';
 import { updateUserTemplate } from '@/services/userService';
 import { Template } from '@/models/template.model';
 import { getUserProfile } from '@/services/authService';
+import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
 
 const isLoading = ref(true);
 const templates = ref<Template[]>([]);
+const isSaving = ref(false);
 const selectedTemplateId = ref<number | null>(null);
-const router = useRouter();
 
 const onGetTemplates = async () => {
   const response = await getAllTemplates();
@@ -24,10 +25,12 @@ const onSaveTemplate = async () => {
   if (!selectedTemplateId.value) return;
 
   try {
+    isSaving.value = true;
     await updateUserTemplate(selectedTemplateId.value);
-    router.push('/app/dashboard');
   } catch (error) {
     console.error('Error:', error);
+  } finally {
+    isSaving.value = false;
   }
 };
 
@@ -49,7 +52,7 @@ onMounted(async () => {
 
 <template>
   <div class="">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 mb-5">
       <div
         v-for="template in templates"
         :key="template.id"
@@ -67,12 +70,13 @@ onMounted(async () => {
       </div>
     </div>
 
-    <button
-      class="mt-6 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+    <BaseButton
+      class="ml-auto"
+      label="Save"
+      :icon="Save"
       :disabled="!selectedTemplateId"
+      :isLoading="isSaving"
       @click="onSaveTemplate"
-    >
-      Save & Continue
-    </button>
+    />
   </div>
 </template>

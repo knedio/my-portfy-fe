@@ -111,9 +111,7 @@ const onSubmit = handleSubmit(async (formValues) => {
   } catch (error) {
     console.log('Error:', error);
   } finally {
-    setTimeout(async () => {
-      isSaving.value = false;
-    }, 3000);
+    isSaving.value = false;
   }
 });
 
@@ -142,7 +140,7 @@ onMounted(async () => {
 
 <template>
   <div class="">
-    <div id="personal-info-form" class="space-y-4 mb-10">
+    <div id="personal-info-form" class="space-y-4 mb-5">
       <div class="flex gap-4">
         <FormInput
           class="w-full"
@@ -161,8 +159,8 @@ onMounted(async () => {
       <FormInput name="location" label="Location" placeholder="Your location" />
     </div>
 
-    <div id="banner-form" class="space-y-4 mb-10">
-      <h2 class="text-xl font-semibold mb-4">Banner</h2>
+    <div id="banner-form" class="space-y-4 mb-5">
+      <h2 class="text-xl font-semibold mb-2">Banner</h2>
       <FormInput name="banner.title" label="Title" placeholder="Banner title" />
       <FormInput
         name="banner.description"
@@ -177,8 +175,8 @@ onMounted(async () => {
       />
     </div>
 
-    <div id="about-form" class="space-y-4 mb-10">
-      <h2 class="text-xl font-semibold mb-4">About</h2>
+    <div id="about-form" class="space-y-4 mb-5">
+      <h2 class="text-xl font-semibold mb-2">About</h2>
       <FormInput name="about.title" label="Title" placeholder="About title" />
       <FormInput
         name="about.description"
@@ -189,8 +187,8 @@ onMounted(async () => {
       <FormInput name="about.image" label="Image URL (optional)" placeholder="e.g. https://..." />
     </div>
 
-    <div id="education-form" class="mb-10">
-      <h2 class="text-xl font-semibold mb-4">Education</h2>
+    <div id="education-form" class="mb-5">
+      <h2 class="text-xl font-semibold mb-2">Education</h2>
       <div
         v-for="(edu, index) in educations"
         :key="edu.key"
@@ -220,8 +218,8 @@ onMounted(async () => {
       </button>
     </div>
 
-    <div id="project-form" class="mb-10">
-      <h2 class="text-xl font-semibold mb-4">Projects</h2>
+    <div id="project-form" class="mb-5">
+      <h2 class="text-xl font-semibold mb-2">Projects</h2>
       <div
         v-for="(proj, index) in projects"
         :key="proj.key"
@@ -249,8 +247,8 @@ onMounted(async () => {
       </button>
     </div>
 
-    <div id="skills-form" class="mb-10">
-      <h2 class="text-xl font-semibold mb-4">Skills</h2>
+    <div id="skills-form" class="mb-5">
+      <h2 class="text-xl font-semibold mb-2">Skills</h2>
       <div
         v-for="(proj, index) in skills"
         :key="proj.key"
