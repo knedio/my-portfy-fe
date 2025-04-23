@@ -24,7 +24,7 @@ onMounted(async () => {});
 
 <template>
   <div class="portfolio-container flex gap-8 px-6 py-4 overflow-hidden">
-    <div class="w-1/2 overflow-y-auto">
+    <div class="w-full lg:w-1/2 overflow-y-auto">
       <FormTabs
         v-model:activeTab="activeTab"
         :tabs="[
@@ -42,7 +42,7 @@ onMounted(async () => {});
         </template>
       </FormTabs>
     </div>
-    <div class="preview-wrapper relative shadow-lg w-1/2">
+    <div class="preview-wrapper relative shadow-lg w-full lg:w-1/2 hidden lg:block">
       <div :class="'overflow-y-auto h-full ' + PORTFOLIO_SCROLL_CONTAINER_SELECTOR">
         <TemplateNebulaView :data="previewData" />
       </div>

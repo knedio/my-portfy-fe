@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { savePortfolioDetails, getPortfolioDetails } from '@/services/portfolioService';
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useForm, useFieldArray } from 'vee-validate';
 import * as yup from 'yup';
+import { Save } from 'lucide-vue-next';
 import { Education, PortfolioDetails, Project, Skill } from '@/models/portfolio.model';
 import FormInput from '@/components/forms/FormInput.vue';
+import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
 import {
   PORTFOLIO_FORM_EDUCATIONS,
   PORTFOLIO_FORM,
@@ -15,6 +17,8 @@ import {
 const emit = defineEmits<{
   (e: 'update', payload: PortfolioDetails): void;
 }>();
+
+const isSaving = ref(false);
 
 const schema = yup.object({
   firstName: yup.string().required('First name is required'),
@@ -101,8 +105,16 @@ const {
 const { fields: skills, remove: removeSkill, push: addSkill } = useFieldArray<Skill>('skills');
 
 const onSubmit = handleSubmit(async (formValues) => {
-  console.log('formValues', formValues);
-  await savePortfolioDetails(formValues);
+  try {
+    isSaving.value = true;
+    await savePortfolioDetails(formValues);
+  } catch (error) {
+    console.log('Error:', error);
+  } finally {
+    setTimeout(async () => {
+      isSaving.value = false;
+    }, 3000);
+  }
 });
 
 const onGetDetails = async () => {
@@ -261,10 +273,14 @@ onMounted(async () => {
       </button>
     </div>
 
-    <div class="text-right">
-      <button @click="onSubmit" class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg">
-        Save Portfolio
-      </button>
+    <div class="flex mb-5">
+      <BaseButton
+        class="ml-auto"
+        :label="'Save'"
+        :icon="Save"
+        :isLoading="isSaving"
+        @click="onSubmit"
+      />
     </div>
   </div>
 </template>
