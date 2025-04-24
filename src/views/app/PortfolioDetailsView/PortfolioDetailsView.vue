@@ -33,10 +33,10 @@ onMounted(async () => {});
         ]"
       >
         <template v-slot="slotProps">
-          <div v-if="slotProps?.activeTab === 'details'" class="px-3">
+          <div v-show="slotProps?.activeTab === 'details'" class="px-3">
             <PortfolioDetailsTab @update="onUpdatePreview" />
           </div>
-          <div v-else-if="slotProps?.activeTab === 'template'" class="px-3">
+          <div v-show="slotProps?.activeTab === 'template'" class="px-3">
             <PortfolioTemplateTab />
           </div>
         </template>

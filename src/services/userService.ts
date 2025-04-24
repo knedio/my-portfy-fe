@@ -24,3 +24,11 @@ export const deleteUser = async (userId: number) => {
 export const updateUserTemplate = async (templateId: number) => {
   return await api.post('/user/template', { template_id: templateId });
 };
+
+export const updatePassword = async (payload: {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}) => {
+  return await api.post('/user/update-password', payload);
+};

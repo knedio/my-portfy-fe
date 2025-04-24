@@ -22,6 +22,10 @@ defineProps({
     type: Number,
     default: 4,
   },
+  inputClass: {
+    type: String,
+    default: '',
+  },
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,7 +46,10 @@ const formatError = (error: any): string => {
           v-bind="field"
           :placeholder="placeholder"
           :rows="rows"
-          class="w-full p-2 rounded bg-gray-800 border border-gray-700 resize-none"
+          :class="[
+            'w-full resize-none',
+            inputClass || 'p-2 rounded bg-gray-800 border border-gray-700',
+          ]"
         ></textarea>
       </template>
       <template v-else>
@@ -50,7 +57,7 @@ const formatError = (error: any): string => {
           v-bind="field"
           :type="type"
           :placeholder="placeholder"
-          class="w-full p-2 rounded bg-gray-800 border border-gray-700"
+          :class="['w-full', inputClass || 'p-2 rounded bg-gray-800 border border-gray-700']"
         />
       </template>
       <p v-if="formatError(errors) && meta.touched" class="text-red-400 text-sm mt-1">

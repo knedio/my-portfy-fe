@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Loader2 } from 'lucide-vue-next';
-import { defineProps, computed } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
   isLoading?: boolean;
