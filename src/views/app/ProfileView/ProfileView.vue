@@ -7,6 +7,7 @@ import { useForm } from 'vee-validate';
 import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
 import FormInput from '@/components/forms/FormInput.vue';
 import { useToast } from '@/composables/useToast';
+import { encryptAES } from '@/utils/crypto';
 
 const router = useRouter();
 const { showToast } = useToast();
@@ -42,9 +43,9 @@ const onUpdatePassword = handleSubmit(async (values) => {
   isSubmitting.value = true;
   try {
     await updatePassword({
-      currentPassword: values.currentPassword,
-      newPassword: values.newPassword,
-      confirmPassword: values.confirmPassword,
+      currentPassword: encryptAES(values.currentPassword),
+      newPassword: encryptAES(values.newPassword),
+      confirmPassword: encryptAES(values.confirmPassword),
     });
 
     showToast('Password updated successfully!', 'success');
@@ -126,22 +127,28 @@ const onUpdatePassword = handleSubmit(async (values) => {
         <h2 class="text-xl font-bold mb-6">Security Settings</h2>
         <div class="space-y-6">
           <FormInput
+            type="password"
             inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             name="currentPassword"
             label="Current Password"
             placeholder="Enter Current Password"
+            toggleable
           />
           <FormInput
+            type="password"
             inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             name="newPassword"
             label="New Password"
             placeholder="Enter New Password"
+            toggleable
           />
           <FormInput
+            type="password"
             inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             name="confirmPassword"
             label="Confirm New Password"
             placeholder="Enter Confirm New Password"
+            toggleable
           />
         </div>
 
