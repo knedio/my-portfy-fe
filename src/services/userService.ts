@@ -1,4 +1,6 @@
+import { User } from '@/models/user.model';
 import { api } from '@/utils/api';
+import { AxiosResponse } from 'axios';
 
 export const getUsers = async () => {
   return api.get('/users');
@@ -31,4 +33,19 @@ export const updatePassword = async (payload: {
   confirmPassword: string;
 }) => {
   return await api.post('/user/update-password', payload);
+};
+
+export const uploadProfilePhoto = async (file: File) => {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response: AxiosResponse<{ message: string; user: User }> = await api.post(
+    '/user/upload-photo',
+    formData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }
+  );
+
+  return response.data;
 };

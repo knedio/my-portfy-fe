@@ -3,6 +3,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  image: string;
   emailVerifiedAt?: string | null;
   contactEmail?: string | null;
   location?: string | null;

@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
+  baseURL: `${VITE_API_BASE_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -47,12 +49,13 @@ export const clearAuthToken = () => {
 };
 
 export const api = {
-  get: <T>(url: string, params = {}) => apiClient.get<T>(url, { params }),
+  get: <T>(url: string, params = {}, config = {}) => apiClient.get<T>(url, { ...config, params }),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  post: <T>(url: string, data?: any) => apiClient.post<T>(url, data),
+  post: <T>(url: string, data?: any, config?: any) => apiClient.post<T>(url, data, config),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  put: <T>(url: string, data?: any) => apiClient.put<T>(url, data),
-  delete: <T>(url: string) => apiClient.delete<T>(url),
+  put: <T>(url: string, data?: any, config?: any) => apiClient.put<T>(url, data, config),
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  delete: <T>(url: string, config?: any) => apiClient.delete<T>(url, config),
 };
 
 export default apiClient;
