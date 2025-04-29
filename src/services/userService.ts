@@ -1,3 +1,4 @@
+import { ProfileForm } from '@/models/forms/profile-form.model';
 import { User } from '@/models/user.model';
 import { api } from '@/utils/api';
 import { AxiosResponse } from 'axios';
@@ -48,4 +49,8 @@ export const uploadProfilePhoto = async (file: File) => {
   );
 
   return response.data;
+};
+
+export const updateProfileSettings = async (formValues: ProfileForm) => {
+  return api.put('/user/update-profile', formValues);
 };

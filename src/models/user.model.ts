@@ -16,4 +16,5 @@ export interface User {
   templateId?: number | null;
   createdAt: string;
   updatedAt: string;
+  professionId: number;
 }

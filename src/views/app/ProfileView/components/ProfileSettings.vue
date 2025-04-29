@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
-import { uploadProfilePhoto } from '@/services/userService';
+import { onMounted, ref } from 'vue';
+import { useForm } from 'vee-validate';
+import * as yup from 'yup';
+import { updateProfileSettings, uploadProfilePhoto } from '@/services/userService';
 import { useAuthStore } from '@/stores/auth';
 import { Loader2 } from 'lucide-vue-next';
 import { useToast } from '@/composables/useToast';
+import { getProfessions } from '@/services/professionService';
+import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
+import FormSelect from '@/components/forms/FormSelect.vue';
+import FormInput from '@/components/forms/FormInput.vue';
+import { getUserProfile } from '@/services/authService';
+import { ProfileForm } from '@/models/forms/profile-form.model';
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const storageUrl = `${VITE_API_BASE_URL}/storage/`;
@@ -12,16 +19,63 @@ const storageUrl = `${VITE_API_BASE_URL}/storage/`;
 const auth = useAuthStore();
 const { showToast } = useToast();
 
-const user = ref({
-  name: 'John Doe',
-  email: 'john@example.com',
-  avatar: 'http://127.0.0.1:8000/storage/avatars/avatar_680b3b0ca9203.jpeg',
-  profession: 'Full Stack Developer',
-  location: 'San Francisco, CA',
-});
 const isUploading = ref(false);
-
+const isSaving = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
+const professionOptions = ref<{ label: string; value: number }[]>([]);
+
+const schema = yup.object({
+  firstName: yup.string().required('First name is required'),
+  lastName: yup.string().required('Last name is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  professionId: yup.number().nullable().required('Profession is required'),
+  location: yup.string().nullable(),
+});
+
+const { handleSubmit, setValues } = useForm({
+  validationSchema: schema,
+  initialValues: {
+    firstName: '',
+    lastName: '',
+    email: '',
+    professionId: null,
+    location: '',
+  } as unknown as ProfileForm,
+});
+
+const onGetProfessions = async () => {
+  try {
+    const professions = await getProfessions();
+    if (professions.data) {
+      professionOptions.value = professions.data.map((item) => ({
+        value: item.id,
+        label: item.name,
+      }));
+    }
+  } catch (error) {
+    console.error('Failed', error);
+    showToast('Failed.', 'error');
+  }
+};
+
+const onGetUserProfile = async () => {
+  try {
+    const user = await getUserProfile();
+
+    if (user.data) {
+      setValues({
+        firstName: user.data.firstName,
+        lastName: user.data.lastName,
+        email: user.data.email,
+        professionId: user.data.professionId ?? null,
+        location: user.data.location ?? '',
+      });
+    }
+  } catch (error) {
+    console.error('Failed', error);
+    showToast('Failed.', 'error');
+  }
+};
 
 const onPhotoClick = () => {
   if (!isUploading.value) fileInput.value?.click();
@@ -43,6 +97,24 @@ const onFileSelected = async (event: Event) => {
     isUploading.value = false;
   }
 };
+
+const onSave = handleSubmit(async (values) => {
+  try {
+    isSaving.value = true;
+    await updateProfileSettings(values);
+    showToast('Profile updated successfully!', 'success');
+  } catch (error) {
+    console.error('Failed', error);
+    showToast('Failed.', 'error');
+  } finally {
+    isSaving.value = false;
+  }
+});
+
+onMounted(async () => {
+  await onGetUserProfile();
+  await onGetProfessions();
+});
 </script>
 
 <template>
@@ -59,7 +131,6 @@ const onFileSelected = async (event: Event) => {
           class="w-32 h-32 rounded-lg bg-gray-700 object-cover"
         />
 
-        <!-- Loader on top of image -->
         <div
           v-if="isUploading"
           class="absolute top-0 left-0 w-32 h-32 flex items-center justify-center bg-black/50 rounded-lg"
@@ -86,44 +157,44 @@ const onFileSelected = async (event: Event) => {
 
       <div class="flex-grow">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-sm text-gray-400 mb-2">Full Name</label>
-            <input
-              type="text"
-              v-model="user.name"
-              class="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400 mb-2">Email</label>
-            <input
-              type="email"
-              v-model="user.email"
-              class="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400 mb-2">Profession</label>
-            <input
-              type="text"
-              v-model="user.profession"
-              class="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm text-gray-400 mb-2">Location</label>
-            <input
-              type="text"
-              v-model="user.location"
-              class="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+          <FormInput
+            inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            name="firstName"
+            label="First Name"
+            placeholder="Your first name"
+          />
+          <FormInput
+            inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            name="lastName"
+            label="Last Name"
+            placeholder="Your last name"
+          />
+          <FormInput
+            inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="email"
+            name="email"
+            label="Email"
+            placeholder="Enter Email"
+          />
+          <div class="hidden md:flex"></div>
+          <FormSelect
+            name="professionId"
+            label="Profession"
+            :options="professionOptions"
+            inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <FormInput
+            inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            name="location"
+            label="Location"
+            placeholder="Enter Location"
+          />
         </div>
       </div>
     </div>
 
     <div class="mt-5 flex justify-end">
-      <BaseButton class="ml-auto" label="Save Changes" />
+      <BaseButton class="ml-auto" label="Save Changes" @click="onSave" />
     </div>
   </div>
 </template>
