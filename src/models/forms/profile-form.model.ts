@@ -3,5 +3,6 @@ export interface ProfileForm {
   lastName: string;
   location: string;
   email: string;
+  username: string;
   professionId: number;
 }

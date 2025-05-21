@@ -11,7 +11,7 @@ const router = useRouter();
 const auth = useAuthStore();
 
 const schema = yup.object({
-  email: yup.string().email('Invalid email format').required('Email is required'),
+  login: yup.string().required('Email or username is required'),
   password: yup
     .string()
     .min(6, 'Password must be at least 6 characters')
@@ -19,7 +19,7 @@ const schema = yup.object({
 });
 
 const { defineField, errors, handleSubmit } = useForm({ validationSchema: schema });
-const [email] = defineField('email');
+const [login] = defineField('login');
 const [password] = defineField('password');
 
 const errorMessage = ref('');
@@ -30,7 +30,7 @@ const isLoading = ref(false);
 const onLogin = handleSubmit(async (values) => {
   isLoading.value = true;
   try {
-    const { user, token } = await loginUser(values.email, values.password);
+    const { user, token } = await loginUser(values.login, values.password);
 
     auth.login(token, user);
 
@@ -77,13 +77,13 @@ useMotion(signInForm, {
       <h2 class="text-3xl font-bold text-center mb-6">Sign In</h2>
       <form @submit.prevent="onLogin" class="space-y-4">
         <div>
-          <label class="block text-gray-300 mb-2">Email</label>
+          <label class="block text-gray-300 mb-2">Email or Username</label>
           <input
-            v-model="email"
-            type="email"
+            v-model="login"
+            type="text"
             class="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <p class="text-red-400 mt-1">{{ errors.email }}</p>
+          <p class="text-red-400 mt-1">{{ errors.login }}</p>
         </div>
         <div>
           <label class="block text-gray-300 mb-2">Password</label>

@@ -17,9 +17,9 @@ export const registerUser = async (
   return response.data;
 };
 
-export const loginUser = async (email: string, password: string): Promise<AuthResponse> => {
+export const loginUser = async (login: string, password: string): Promise<AuthResponse> => {
   const response: AxiosResponse<AuthResponse> = await api.post('/login', {
-    email,
+    login,
     password,
   });
 

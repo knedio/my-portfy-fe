@@ -38,6 +38,7 @@ const { handleSubmit, setValues } = useForm({
     firstName: '',
     lastName: '',
     email: '',
+    username: '',
     professionId: null,
     location: '',
   } as unknown as ProfileForm,
@@ -67,6 +68,7 @@ const onGetUserProfile = async () => {
         firstName: user.data.firstName,
         lastName: user.data.lastName,
         email: user.data.email,
+        username: user.data.username,
         professionId: user.data.professionId ?? null,
         location: user.data.location ?? '',
       });
@@ -176,7 +178,13 @@ onMounted(async () => {
             label="Email"
             placeholder="Enter Email"
           />
-          <div class="hidden md:flex"></div>
+          <FormInput
+            inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="text"
+            name="username"
+            label="Username"
+            placeholder="Enter Username"
+          />
           <FormSelect
             name="professionId"
             label="Profession"

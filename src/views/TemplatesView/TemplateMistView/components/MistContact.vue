@@ -179,7 +179,7 @@ const onSubmit = handleSubmit(async (formValues) => {
   </section>
 </template>
 
-<style>
+<style scoped>
 .contact-section {
   padding: 6rem 0;
   background: linear-gradient(to bottom, #44244d 0%, #190f23 100%);
