@@ -7,6 +7,10 @@ import DashboardView from '@/views/app/DashboardView/DashboardView.vue';
 import ProfileView from '@/views/app/ProfileView/ProfileView.vue';
 import PortfolioDetailsView from '@/views/app/PortfolioDetailsView/PortfolioDetailsView.vue';
 import TemplateNebulaView from '@/views/TemplatesView/TemplateNebulaView/TemplateNebulaView.vue';
+import TemplateMistView from '@/views/TemplatesView/TemplateMistView/TemplateMistView.vue';
+import TemplateLuminaView from '@/views/TemplatesView/TemplateLuminaView/TemplateLuminaView.vue';
+import TemplateAetherView from '@/views/TemplatesView/TemplateAetherView/TemplateAetherView.vue';
+import TemplateOrionView from '@/views/TemplatesView/TemplateOrionView/TemplateOrionView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +44,26 @@ const router = createRouter({
           path: 'nebula',
           name: 'nebula',
           component: TemplateNebulaView,
+        },
+        {
+          path: 'mist',
+          name: 'mist',
+          component: TemplateMistView,
+        },
+        {
+          path: 'lumina',
+          name: 'lumina',
+          component: TemplateLuminaView,
+        },
+        {
+          path: 'aether',
+          name: 'aether',
+          component: TemplateAetherView,
+        },
+        {
+          path: 'orion',
+          name: 'orion',
+          component: TemplateOrionView,
         },
       ],
     },

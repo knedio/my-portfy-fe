@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  :root {
+    /* Orion color scheme */
+    --orion-primary: #3b4bcc;
+    --orion-primary-light: #5d6de9;
+    --orion-secondary: #6e3bcc;
+    --orion-secondary-light: #9c5dff;
+    --orion-accent: #3bcca1;
+    --orion-accent-light: #5de9c7;
+
+    /* Neutrals */
+    --orion-bg-dark: #0b101f;
+    --orion-bg-card: #121a32;
+    --orion-text-primary: rgba(255, 255, 255, 0.94);
+    --orion-text-secondary: rgba(255, 255, 255, 0.8);
+    --orion-text-muted: rgba(255, 255, 255, 0.65);
+
+    /* Status colors */
+    --orion-success: #2cb67d;
+    --orion-warning: #ffb331;
+    --orion-error: #ef476f;
+
+    /* Spacing system (8px) */
+    --space-1: 0.25rem; /* 4px */
+    --space-2: 0.5rem; /* 8px */
+    --space-3: 1rem; /* 16px */
+    --space-4: 1.5rem; /* 24px */
+    --space-5: 2rem; /* 32px */
+    --space-6: 3rem; /* 48px */
+    --space-7: 4rem; /* 64px */
+    --space-8: 6rem; /* 96px */
+
+    /* Typography */
+    --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-size-sm: 0.875rem; /* 14px */
+    --font-size-base: 1rem; /* 16px */
+    --font-size-lg: 1.125rem; /* 18px */
+    --font-size-xl: 1.25rem; /* 20px */
+    --font-size-2xl: 1.5rem; /* 24px */
+    --font-size-3xl: 2rem; /* 32px */
+    --font-size-4xl: 2.5rem; /* 40px */
+    --font-size-5xl: 3rem; /* 48px */
+
+    /* Font weights */
+    --font-light: 300;
+    --font-regular: 400;
+    --font-semibold: 600;
+
+    /* Line heights */
+    --line-height-body: 1.5; /* 150% */
+    --line-height-heading: 1.2; /* 120% */
+
+    /* Borders */
+    --border-radius-sm: 0.25rem; /* 4px */
+    --border-radius: 0.5rem; /* 8px */
+    --border-radius-lg: 1rem; /* 16px */
+    --border-radius-xl: 1.5rem; /* 24px */
+    --border-radius-full: 9999px;
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-base: 300ms ease;
+    --transition-slow: 500ms ease;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.25);
+
+    /* Z-indices */
+    --z-negative: -1;
+    --z-base: 1;
+    --z-elevated: 10;
+    --z-modal: 100;
+    --z-toast: 1000;
+  }
+
+  body {
+    .orion-template {
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      line-height: var(--line-height-body);
+      color: var(--orion-text-primary);
+      background-color: var(--orion-bg-dark);
+      overflow-x: hidden;
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: var(--font-semibold);
+        line-height: var(--line-height-heading);
+        margin-bottom: var(--space-3);
+        letter-spacing: -0.02em;
+      }
+
+      h1 {
+        font-size: var(--font-size-5xl);
+      }
+
+      h2 {
+        font-size: var(--font-size-4xl);
+        margin-bottom: var(--space-5);
+        color: var(--orion-text-primary);
+      }
+
+      p {
+        margin-bottom: var(--space-3);
+      }
+
+      a {
+        color: var(--orion-accent);
+        text-decoration: none;
+        transition: color var(--transition-fast);
+
+        &:hover {
+          color: var(--orion-accent-light);
+        }
+      }
+
+      button,
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-2) var(--space-4);
+        border-radius: var(--border-radius);
+        font-weight: var(--font-semibold);
+        cursor: pointer;
+        transition: all var(--transition-base);
+        border: none;
+        background: var(--orion-accent);
+        color: var(--orion-bg-dark);
+        font-size: var(--font-size-base);
+        letter-spacing: 0.5px;
+
+        &:hover {
+          background: var(--orion-accent-light);
+          transform: translateY(-2px);
+        }
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 var(--space-4);
+      }
+
+      section {
+        padding: var(--space-7) 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .glass-card {
+        background: rgba(45, 52, 54, 0.8);
+        backdrop-filter: blur(12px);
+        border-radius: var(--border-radius);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform var(--transition-base);
+
+        &:hover {
+          transform: translateY(-5px);
+        }
+      }
+
+      .section-heading {
+        text-align: center;
+        margin-bottom: var(--space-6);
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 60px;
+          height: 4px;
+          background: var(--orion-accent);
+          border-radius: var(--border-radius-full);
+        }
+      }
+
+      .orion-gradient {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+          linear-gradient(135deg, rgba(0, 184, 148, 0.1) 0%, transparent 50%),
+          linear-gradient(45deg, rgba(85, 239, 196, 0.1) 0%, transparent 50%);
+        z-index: var(--z-negative);
+        pointer-events: none;
+      }
+
+      // Form styles
+      input,
+      textarea {
+        width: 100%;
+        padding: var(--space-3);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--border-radius);
+        color: var(--orion-text-primary);
+        font-family: var(--font-family);
+        transition: all var(--transition-fast);
+
+        &:focus {
+          outline: none;
+          border-color: var(--orion-accent);
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &::placeholder {
+          color: var(--orion-text-muted);
+        }
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .error-message {
+        color: var(--orion-error);
+        font-size: var(--font-size-sm);
+        margin-top: calc(-1 * var(--space-2));
+        margin-bottom: var(--space-3);
+      }
+    }
+  }
+}

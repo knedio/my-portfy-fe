@@ -13,6 +13,10 @@ const props = defineProps({
   toggleable: { type: Boolean, default: false }, // supports show/hide password
 });
 
+const emit = defineEmits<{
+  (e: 'blur', event: FocusEvent): void;
+}>();
+
 const showPassword = ref(false);
 
 const inputType = computed(() => {
@@ -42,6 +46,11 @@ const formatError = (error: unknown): string => {
             'w-full resize-none',
             inputClass || 'p-2 rounded bg-gray-800 border border-gray-700',
           ]"
+          @blur="
+            field.onBlur($event);
+            emit('blur', $event);
+          "
+          @input="field.onChange"
         />
       </template>
 
@@ -56,6 +65,11 @@ const formatError = (error: unknown): string => {
               'w-full pr-10',
               inputClass || 'p-2 rounded bg-gray-800 border border-gray-700',
             ]"
+            @blur="
+              field.onBlur($event);
+              emit('blur', $event);
+            "
+            @input="field.onChange"
           />
           <button
             v-if="toggleable"

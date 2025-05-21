@@ -13,6 +13,7 @@ export interface Project {
   tech: string;
   image: string;
   link: string;
+  category: string;
 }
 
 export interface Skill {
@@ -21,12 +22,15 @@ export interface Skill {
   level: string;
   experience: string;
   icon: string;
+  subSkills?: string[];
+  subSkillsText?: string; // for temporary storing as string
 }
 
 export interface PortfolioDetails {
   firstName: string;
   lastName: string;
   contactEmail: string;
+  mobileNumber?: string;
   location: string;
   about: {
     title: string;

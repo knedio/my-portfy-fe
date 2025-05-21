@@ -58,9 +58,20 @@ const IconComponent = (d: string) =>
               ></div>
             </div>
             <p class="text-gray-400 text-sm">{{ skill.experience }}</p>
+            <ul class="flex flex-wrap gap-2 justify-center mt-3">
+              <li
+                v-for="subSkill in skill.subSkills"
+                :key="subSkill"
+                class="bg-gray-700 text-sm text-white px-3 py-1 rounded-full"
+              >
+                {{ subSkill }}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped lang="scss"></style>

@@ -15,9 +15,17 @@ export const PORTFOLIO_FORM_PROJECTS: Project = {
   tech: '',
   image: '',
   link: '',
+  category: '',
 };
 
-export const PORTFOLIO_FORM_SKILLS: Skill = { name: '', level: '', experience: '', icon: '' };
+export const PORTFOLIO_FORM_SKILLS: Skill = {
+  name: '',
+  level: '',
+  experience: '',
+  icon: '',
+  subSkills: [],
+  subSkillsText: '',
+};
 
 export const PORTFOLIO_FORM: PortfolioDetails = {
   firstName: '',

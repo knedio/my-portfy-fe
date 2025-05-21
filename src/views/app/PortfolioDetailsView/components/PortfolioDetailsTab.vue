@@ -74,6 +74,7 @@ const schema = yup.object({
           .nullable(),
         experience: yup.string().nullable(),
         icon: yup.string().nullable(),
+        subSkills: yup.array().of(yup.string().required()).nullable(),
       })
     )
     .min(1, 'At least one skill is required'),
@@ -102,7 +103,12 @@ const {
   remove: removeProject,
   push: addProject,
 } = useFieldArray<Project>('projects');
-const { fields: skills, remove: removeSkill, push: addSkill } = useFieldArray<Skill>('skills');
+const {
+  fields: skills,
+  remove: removeSkill,
+  push: addSkill,
+  update: updateSkill,
+} = useFieldArray<Skill>('skills');
 
 const onSubmit = handleSubmit(async (formValues) => {
   try {
@@ -128,9 +134,27 @@ const onGetDetails = async () => {
       banner: data?.banner ?? { title: '', description: '', btnLabel: '' },
       educations: data.educations?.length ? data.educations : [PORTFOLIO_FORM_EDUCATIONS],
       projects: data.projects?.length ? data.projects : [PORTFOLIO_FORM_PROJECTS],
-      skills: data.skills?.length ? data.skills : [PORTFOLIO_FORM_SKILLS],
+      skills: data.skills?.length
+        ? data.skills.map((skill) => ({
+            ...skill,
+            subSkillsText: (skill.subSkills ?? []).join(', '),
+          }))
+        : [PORTFOLIO_FORM_SKILLS],
     });
   }
+};
+
+const onSubSkillsBlur = (index: number) => {
+  const skill = values.skills?.[index];
+  const raw = skill?.subSkillsText;
+  const parsed = raw
+    ? raw
+        .split(',')
+        .map((s: string) => s.trim())
+        .filter(Boolean)
+    : [];
+
+  updateSkill(index, { ...skill, subSkills: parsed });
 };
 
 onMounted(async () => {
@@ -233,6 +257,10 @@ onMounted(async () => {
         />
         <FormInput :name="`projects[${index}].tech`" placeholder="Technologies Used" />
         <FormInput :name="`projects[${index}].image`" placeholder="Thumbnail Image" />
+        <FormInput
+          :name="`projects[${index}].category`"
+          placeholder="Project category (optional)"
+        />
         <FormInput :name="`projects[${index}].link`" placeholder="Project Link (optional)" />
 
         <button @click="removeProject(index)" class="text-red-400 hover:underline text-sm mt-1">
@@ -258,6 +286,11 @@ onMounted(async () => {
         <FormInput :name="`skills[${index}].level`" placeholder="Skill level (0-10)" />
         <FormInput :name="`skills[${index}].experience`" placeholder="Skill experience" />
         <FormInput :name="`skills[${index}].icon`" placeholder="Icon" />
+        <FormInput
+          :name="`skills[${index}].subSkillsText`"
+          placeholder="Sub-skills (comma separated)"
+          @blur="onSubSkillsBlur(index)"
+        />
 
         <button @click="removeSkill(index)" class="text-red-400 hover:underline text-sm mt-1">
           Remove

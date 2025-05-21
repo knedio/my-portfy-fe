@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 @import './templates/nebula.scss';
+@import './templates/lumina.scss';
+@import './templates/aether.scss';
+@import './templates/orion.scss';
 
 @layer base {
   * {
