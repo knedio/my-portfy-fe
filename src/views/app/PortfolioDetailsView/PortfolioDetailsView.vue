@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import FormTabs from '@/components/forms/FormTab.vue';
 import PortfolioDetailsTab from './components/PortfolioDetailsTab.vue';
 import PortfolioTemplateTab from './components/PortfolioTemplateTab.vue';
-import TemplateNebulaView from '@/views/TemplatesView/TemplateNebulaView/TemplateNebulaView.vue';
+import TemplateRouterView from '@/views/TemplatesView/TemplateRouterView.vue';
 import { PortfolioDetails } from '@/models/portfolio.model';
 import {
   PORTFOLIO_FORM,
@@ -44,7 +44,7 @@ onMounted(async () => {});
     </div>
     <div class="preview-wrapper relative shadow-lg w-full lg:w-1/2 hidden lg:block">
       <div :class="'overflow-y-auto h-full ' + PORTFOLIO_SCROLL_CONTAINER_SELECTOR">
-        <TemplateNebulaView :data="previewData" />
+        <TemplateRouterView :isPreview="true" :data="previewData" />
       </div>
     </div>
   </div>

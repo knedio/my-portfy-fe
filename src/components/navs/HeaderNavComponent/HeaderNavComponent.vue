@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { RouterLink, useRouter } from 'vue-router';
 import { useMotion } from '@vueuse/motion';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import PortfyLogo from '@/assets/portfy.png';
 import { ChevronDown, User } from 'lucide-vue-next';
 import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
+
 const nav = ref(null);
+const copied = ref(false);
 
 useMotion(nav, {
   initial: { opacity: 0, y: -20 },
@@ -18,10 +20,30 @@ useMotion(nav, {
   },
 });
 
-const auth = useAuthStore();
+const authStore = useAuthStore();
+
+const profileUrl = computed(() => {
+  const user = authStore.user;
+  const templateName = user?.template.name.toLocaleLowerCase();
+  const username = user?.username;
+  const baseUrl = window.location.origin;
+  const url = `${baseUrl}/${username}/templates/${templateName}`;
+
+  return url;
+});
+
+const copyProfileUrl = async () => {
+  try {
+    await navigator.clipboard.writeText(profileUrl.value);
+    copied.value = true;
+    setTimeout(() => (copied.value = false), 1500);
+  } catch (err) {
+    console.error('Failed to copy:', err);
+  }
+};
 
 const onLogout = () => {
-  auth.logout();
+  authStore.logout();
   router.push('/sign-in');
 };
 </script>
@@ -30,16 +52,50 @@ const onLogout = () => {
   <header class="pb-6">
     <nav ref="nav" class="nav px-10">
       <RouterLink
-        :to="!auth.isAuthenticated ? '/' : '/app/dashboard'"
+        :to="!authStore.isAuthenticated ? '/' : '/app/dashboard'"
         class="text-2xl font-bold text-white tracking-wide"
       >
         <img :src="PortfyLogo" alt="Portfy Logo" class="h-10 w-auto" />
       </RouterLink>
 
       <div class="flex items-center gap-6">
-        <RouterLink v-if="!auth.isAuthenticated" to="/" class="flex items-center">Home</RouterLink>
+        <!-- Share Profile Button -->
+        <!-- Share Profile Copy Button -->
+        <div class="relative">
+          <button
+            @click="copyProfileUrl"
+            class="flex items-center gap-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-full text-sm shadow-sm transition duration-300"
+            title="Copy profile URL"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 8a3 3 0 00-6 0v1a3 3 0 006 0V8zm6 8v-2a4 4 0 00-3-3.87M3 16v-2a4 4 0 013-3.87M15 12a4 4 0 11-6-3.87"
+              />
+            </svg>
+            <span>Share</span>
+          </button>
+          <span
+            v-if="copied"
+            class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-green-400 bg-gray-900 px-2 py-1 rounded transition-opacity duration-300"
+          >
+            Copied!
+          </span>
+        </div>
 
-        <template v-if="auth.isAuthenticated">
+        <RouterLink v-if="!authStore.isAuthenticated" to="/" class="flex items-center"
+          >Home</RouterLink
+        >
+
+        <template v-if="authStore.isAuthenticated">
           <RouterLink to="/app/dashboard" class="flex items-center">Dashboard</RouterLink>
           <RouterLink to="/app/portfolio-details" class="flex items-center">Portfolio</RouterLink>
 

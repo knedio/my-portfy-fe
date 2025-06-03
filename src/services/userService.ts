@@ -24,8 +24,17 @@ export const deleteUser = async (userId: number) => {
   return api.delete(`/users/${userId}`);
 };
 
-export const updateUserTemplate = async (templateId: number) => {
-  return await api.post('/user/template', { template_id: templateId });
+export const updateUserTemplate = async (
+  templateId: number
+): Promise<{ success: boolean; user: User }> => {
+  const response: AxiosResponse<{ success: boolean; user: User }> = await api.post(
+    '/user/template',
+    {
+      template_id: templateId,
+    }
+  );
+
+  return response.data;
 };
 
 export const updatePassword = async (payload: {

@@ -1,3 +1,5 @@
+import { Template } from './template.model';
+
 export interface User {
   id: number;
   firstName: string;
@@ -15,6 +17,7 @@ export interface User {
   } | null;
   about?: string | null;
   templateId?: number | null;
+  template: Template;
   createdAt: string;
   updatedAt: string;
   professionId: number;

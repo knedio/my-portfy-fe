@@ -4,10 +4,14 @@ import { useMotion } from '@vueuse/motion';
 import * as yup from 'yup';
 import { useForm } from 'vee-validate';
 import { registerUser } from '@/services/authService';
+import { RegistrationForm } from '@/models/forms/registration-form.model';
+import FormInput from '@/components/forms/FormInput.vue';
 
 const schema = yup.object({
-  name: yup.string().required('Name is required'),
+  firstName: yup.string().required('First name is required'),
+  lastName: yup.string().required('Last name is required'),
   email: yup.string().email('Invalid email format').required('Email is required'),
+  username: yup.string().required('Username is required'),
   password: yup
     .string()
     .min(6, 'Password must be at least 6 characters')
@@ -18,11 +22,16 @@ const schema = yup.object({
     .required('Confirm Password is required'),
 });
 
-const { defineField, errors, handleSubmit, resetForm } = useForm({ validationSchema: schema });
-const [nameField] = defineField('name');
-const [emailField] = defineField('email');
-const [passwordField] = defineField('password');
-const [confirmPasswordField] = defineField('confirmPassword');
+const { handleSubmit, resetForm } = useForm<RegistrationForm>({
+  validationSchema: schema,
+  initialValues: {
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    password: '',
+  },
+});
 
 const successMessage = ref('');
 const errorMessage = ref('');
@@ -31,7 +40,7 @@ const isSubmitting = ref(false);
 const onRegister = handleSubmit(async (values) => {
   try {
     isSubmitting.value = true;
-    await registerUser(values.name, values.email, values.password);
+    await registerUser(values);
     successMessage.value = 'Registered successfully!';
     setTimeout(() => (successMessage.value = ''), 3000);
 
@@ -59,49 +68,54 @@ useMotion(registrationForm, {
 
 <template>
   <div class="flex items-center justify-center">
-    <div ref="registrationForm" class="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow-lg">
+    <div ref="registrationForm" class="max-w-lg w-full bg-gray-800 p-8 rounded-lg shadow-lg">
       <h2 class="text-3xl font-bold text-center mb-6">Sign Up</h2>
       <form @submit.prevent="onRegister" class="space-y-4">
-        <div>
-          <label class="block text-gray-300 mb-2">Name</label>
-          <input
-            v-model="nameField"
-            type="text"
-            class="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <div class="flex gap-4 mb-0">
+          <FormInput
+            inputClass="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            name="firstName"
+            label="First Name"
+            placeholder="Enter first name"
           />
-          <p class="text-red-400 mt-1">{{ errors.name }}</p>
-        </div>
-        <div>
-          <label class="block text-gray-300 mb-2">Email</label>
-          <input
-            v-model="emailField"
-            type="email"
-            class="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <FormInput
+            inputClass="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            name="lastName"
+            label="Last Name"
+            placeholder="Enter last name"
           />
-          <p class="text-red-400 mt-1">{{ errors.email }}</p>
         </div>
-        <div>
-          <label class="block text-gray-300 mb-2">Password</label>
-          <input
-            v-model="passwordField"
-            type="password"
-            class="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <p class="text-red-400 mt-1">{{ errors.password }}</p>
-        </div>
-        <div>
-          <label class="block text-gray-300 mb-2">Confirm Password</label>
-          <input
-            v-model="confirmPasswordField"
-            type="password"
-            class="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <p class="text-red-400 mt-1">{{ errors.confirmPassword }}</p>
-        </div>
+        <FormInput
+          inputClass="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          name="email"
+          label="Email"
+          placeholder="Enter email"
+        />
+        <FormInput
+          inputClass="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          name="username"
+          label="Username"
+          placeholder="Enter username"
+        />
+        <FormInput
+          inputClass="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          name="password"
+          type="password"
+          label="Password"
+          placeholder="Enter password"
+        />
+        <FormInput
+          inputClass="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          name="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          placeholder="Enter confirm Password"
+        />
+
         <button
           type="submit"
           :disabled="isSubmitting"
-          class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition duration-300"
+          class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 mt-4"
         >
           <span v-if="isSubmitting">Signing Up...</span>
           <span v-else>Sign Up</span>

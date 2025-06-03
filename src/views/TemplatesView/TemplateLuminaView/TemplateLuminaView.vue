@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Loading from 'vue-loading-overlay';
 import Header from './components/layout/LuminaHeader.vue';
 import Banner from './components/sections/LuminaBanner.vue';
 import AboutSection from './components/sections/LuminaAbout.vue';
@@ -7,44 +8,8 @@ import ProjectsSection from './components/sections/LuminaProjects.vue';
 import ContactSection from './components/sections/LuminaContact.vue';
 import Footer from './components/layout/LuminaFooter.vue';
 import { usePortfolioStore } from '@/stores/portfolio';
-import { PortfolioDetails } from '@/models/portfolio.model';
-import { onMounted, onUnmounted, watch } from 'vue';
-import { getPortfolioDetails } from '@/services/portfolioService';
 
 const portfolioStore = usePortfolioStore();
-
-const props = defineProps<{
-  data?: PortfolioDetails;
-}>();
-
-watch(
-  () => props.data,
-  (newData) => {
-    if (newData) {
-      portfolioStore.setPortfolio(newData);
-    }
-  },
-  { immediate: true, deep: true }
-);
-
-const onGetDetails = async () => {
-  portfolioStore.setLoading(true);
-  const { data } = await getPortfolioDetails();
-
-  portfolioStore.setPortfolio(data);
-  portfolioStore.setLoading(false);
-};
-
-onMounted(async () => {
-  if (!portfolioStore.data) {
-    // if no prop and no existing data, fetch from API
-    await onGetDetails();
-  }
-});
-
-onUnmounted(() => {
-  portfolioStore.$reset();
-});
 </script>
 
 <template>
@@ -53,12 +18,20 @@ onUnmounted(() => {
 
     <Header />
 
-    <div>
-      <Banner />
-      <AboutSection />
-      <SkillsSection />
-      <ProjectsSection />
-      <ContactSection />
+    <div class="flex-1">
+      <Loading
+        :active="portfolioStore.isLoading"
+        loader="dots"
+        :opacity="0.1"
+        :is-full-page="false"
+      />
+      <div v-if="!portfolioStore.isLoading">
+        <Banner />
+        <AboutSection />
+        <SkillsSection />
+        <ProjectsSection />
+        <ContactSection />
+      </div>
     </div>
 
     <Footer />

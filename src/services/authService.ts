@@ -1,19 +1,12 @@
 import { AuthResponse } from '@/models/auth.model';
+import { RegistrationForm } from '@/models/forms/registration-form.model';
 import { ApiResponse } from '@/models/general/responses/api-response.model';
 import { User } from '@/models/user.model';
 import { api, setAuthToken, clearAuthToken } from '@/utils/api';
 import { AxiosResponse } from 'axios';
 
-export const registerUser = async (
-  name: string,
-  email: string,
-  password: string
-): Promise<AuthResponse> => {
-  const response: AxiosResponse<AuthResponse> = await api.post('/register', {
-    name,
-    email,
-    password,
-  });
+export const registerUser = async (value: RegistrationForm): Promise<AuthResponse> => {
+  const response: AxiosResponse<AuthResponse> = await api.post('/register', value);
   return response.data;
 };
 

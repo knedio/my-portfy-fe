@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue';
+import Loading from 'vue-loading-overlay';
 import Header from './components/MistHeader.vue';
 import Banner from './components/MistBanner.vue';
 import About from './components/MistAbout.vue';
@@ -7,58 +7,30 @@ import Skills from './components/MistSkills.vue';
 import Projects from './components/MistProjects.vue';
 import Contact from './components/MistContact.vue';
 import { usePortfolioStore } from '@/stores/portfolio';
-import { PortfolioDetails } from '@/models/portfolio.model';
-import { getPortfolioDetails } from '@/services/portfolioService';
 
 const portfolioStore = usePortfolioStore();
-const isLoaded = ref(false);
-
-const props = defineProps<{
-  data?: PortfolioDetails;
-}>();
-
-watch(
-  () => props.data,
-  (newData) => {
-    if (newData) {
-      portfolioStore.setPortfolio(newData);
-    }
-  },
-  { immediate: true, deep: true }
-);
-
-const onGetDetails = async () => {
-  portfolioStore.setLoading(true);
-  const { data } = await getPortfolioDetails();
-
-  portfolioStore.setPortfolio(data);
-  portfolioStore.setLoading(false);
-};
-
-onMounted(async () => {
-  if (!portfolioStore.data) {
-    // if no prop and no existing data, fetch from API
-    await onGetDetails();
-    isLoaded.value = true;
-  }
-});
-
-onUnmounted(() => {
-  portfolioStore.$reset();
-});
 </script>
 
 <template>
-  <div class="portfolio-container" :class="{ loaded: isLoaded }">
+  <div class="portfolio-container">
     <Header />
-    <div>
-      <Banner />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
+
+    <div class="flex-1">
+      <Loading
+        :active="portfolioStore.isLoading"
+        loader="dots"
+        :opacity="0.1"
+        :is-full-page="false"
+      />
+      <div v-if="!portfolioStore.isLoading">
+        <Banner />
+        <About />
+        <Skills />
+        <Projects />
+        <Contact />
+      </div>
     </div>
-    <footer class="footer">
+    <footer v-if="!portfolioStore.isLoading" class="footer">
       <div class="container">
         <p>&copy; {{ new Date().getFullYear() }} | Designed with 💖</p>
       </div>
@@ -67,14 +39,14 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.portfolio-container {
+/* .portfolio-container {
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }
 
 .portfolio-container.loaded {
   opacity: 1;
-}
+} */
 
 .footer {
   padding: 2rem 0;

@@ -6,6 +6,9 @@ import { updateUserTemplate } from '@/services/userService';
 import { Template } from '@/models/template.model';
 import { getUserProfile } from '@/services/authService';
 import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
+import { useAuthStore } from '@/stores/auth';
+
+const authStore = useAuthStore();
 
 const isLoading = ref(true);
 const templates = ref<Template[]>([]);
@@ -26,7 +29,9 @@ const onSaveTemplate = async () => {
 
   try {
     isSaving.value = true;
-    await updateUserTemplate(selectedTemplateId.value);
+    const res = await updateUserTemplate(selectedTemplateId.value);
+    authStore.setUser(res.user);
+    console.log('res', res);
   } catch (error) {
     console.error('Error:', error);
   } finally {
