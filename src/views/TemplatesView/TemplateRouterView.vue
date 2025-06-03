@@ -1,23 +1,22 @@
 <script setup lang="ts">
+import Loading from 'vue-loading-overlay';
 import { useRoute, useRouter } from 'vue-router';
-import { ref, watchEffect, markRaw } from 'vue';
+import { ref, markRaw } from 'vue';
 import TemplateNebulaView from '@/views/TemplatesView/TemplateNebulaView/TemplateNebulaView.vue';
 import TemplateMistView from '@/views/TemplatesView/TemplateMistView/TemplateMistView.vue';
 import TemplateLuminaView from '@/views/TemplatesView/TemplateLuminaView/TemplateLuminaView.vue';
 import TemplateAetherView from '@/views/TemplatesView/TemplateAetherView/TemplateAetherView.vue';
 import TemplateOrionView from '@/views/TemplatesView/TemplateOrionView/TemplateOrionView.vue';
-import { getPortfolioDetails } from '@/services/portfolioService';
+import { getPortfolioDetails, getPortfolioDetailsByUsername } from '@/services/portfolioService';
 import { onMounted, onUnmounted, watch } from 'vue';
-import { usePortfolioStore } from '@/stores/portfolio';
 import { PortfolioDetails } from '@/models/portfolio.model';
-import { useAuthStore } from '@/stores/auth';
+import { usePortfolioStore } from '@/stores/portfolio';
 
 const props = defineProps<{
   isPreview?: boolean;
   data?: PortfolioDetails;
 }>();
 
-const authStore = useAuthStore();
 const portfolioStore = usePortfolioStore();
 
 const route = useRoute(); // get current route
@@ -37,9 +36,23 @@ watch(
 
 const onGetDetails = async () => {
   portfolioStore.setLoading(true);
-  const { data } = await getPortfolioDetails();
+  const username = route.params.username as string;
+
+  const { data } = username
+    ? await getPortfolioDetailsByUsername(username)
+    : await getPortfolioDetails();
 
   portfolioStore.setPortfolio(data);
+
+  const template: string = portfolioStore?.data?.template.name.toLocaleLowerCase() ?? '';
+
+  if (!templateMap[template] && !props.isPreview) {
+    router.replace('/not-found'); // redirect if template not found
+    return;
+  }
+
+  component.value = markRaw(templateMap[template]); // prevent vue from making component reactive
+
   portfolioStore.setLoading(false);
 };
 
@@ -52,29 +65,8 @@ const templateMap: Record<string, any> = {
   mist: TemplateMistView,
 };
 
-watchEffect(() => {
-  const name = route.params.template as string; // get template name from route
-
-  const template: string = props.isPreview
-    ? (authStore.user?.template.name.toLocaleLowerCase() ?? name)
-    : name;
-
-  if (!templateMap[template] && !props.isPreview) {
-    router.replace('/not-found'); // redirect if template not found
-    return;
-  }
-
-  console.log('template', template);
-
-  component.value = markRaw(templateMap[template]); // prevent vue from making component reactive
-});
-
 onMounted(async () => {
-  console.log('portfolioStore.data', portfolioStore.data);
-  if (!portfolioStore.data && !props.isPreview) {
-    // if no prop and no existing data, fetch from API
-    await onGetDetails();
-  }
+  await onGetDetails();
 });
 
 onUnmounted(() => {
@@ -83,5 +75,13 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <component :is="component" />
+  <div>
+    <Loading
+      :active="portfolioStore.isLoading"
+      loader="dots"
+      :opacity="0.1"
+      :is-full-page="false"
+    />
+    <component v-if="!portfolioStore.isLoading" :is="component" />
+  </div>
 </template>

@@ -11,3 +11,10 @@ export const getPortfolioDetails = async (): Promise<ApiResponse<PortfolioDetail
   const response = await api.get<ApiResponse<PortfolioDetails>>('/portfolio');
   return response.data;
 };
+
+export const getPortfolioDetailsByUsername = async (
+  username: string
+): Promise<ApiResponse<PortfolioDetails>> => {
+  const response = await api.get<ApiResponse<PortfolioDetails>>(`/portfolio/${username}`);
+  return response.data;
+};

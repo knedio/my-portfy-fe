@@ -32,9 +32,9 @@ const router = createRouter({
       component: RegistrationView,
     },
     {
-      path: '/:username/templates/:template',
+      path: '/profile/:username',
       meta: { layout: 'TemplateLayout' },
-      name: 'user-template',
+      name: 'user-portfolio',
       component: TemplateRouterView,
     },
     {

@@ -1,3 +1,5 @@
+import { Template } from './template.model';
+
 export interface Education {
   id?: number;
   school: string;
@@ -45,4 +47,5 @@ export interface PortfolioDetails {
   educations: Education[];
   projects: Project[];
   skills: Skill[];
+  template: Template;
 }

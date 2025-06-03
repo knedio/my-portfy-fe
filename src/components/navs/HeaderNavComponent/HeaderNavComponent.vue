@@ -24,10 +24,9 @@ const authStore = useAuthStore();
 
 const profileUrl = computed(() => {
   const user = authStore.user;
-  const templateName = user?.template.name.toLocaleLowerCase();
   const username = user?.username;
   const baseUrl = window.location.origin;
-  const url = `${baseUrl}/${username}/templates/${templateName}`;
+  const url = `${baseUrl}/profile/${username}`;
 
   return url;
 });

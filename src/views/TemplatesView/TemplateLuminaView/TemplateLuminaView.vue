@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Loading from 'vue-loading-overlay';
 import Header from './components/layout/LuminaHeader.vue';
 import Banner from './components/sections/LuminaBanner.vue';
 import AboutSection from './components/sections/LuminaAbout.vue';
@@ -19,12 +18,6 @@ const portfolioStore = usePortfolioStore();
     <Header />
 
     <div class="flex-1">
-      <Loading
-        :active="portfolioStore.isLoading"
-        loader="dots"
-        :opacity="0.1"
-        :is-full-page="false"
-      />
       <div v-if="!portfolioStore.isLoading">
         <Banner />
         <AboutSection />
