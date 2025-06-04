@@ -60,7 +60,7 @@ const onLogout = () => {
       <div class="flex items-center gap-6">
         <!-- Share Profile Button -->
         <!-- Share Profile Copy Button -->
-        <div class="relative">
+        <div v-if="authStore.isAuthenticated" class="relative">
           <button
             @click="copyProfileUrl"
             class="flex items-center gap-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-full text-sm shadow-sm transition duration-300"
