@@ -7,6 +7,9 @@ import { Template } from '@/models/template.model';
 import { getUserProfile } from '@/services/authService';
 import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
 import { useAuthStore } from '@/stores/auth';
+import { usePortfolioStore } from '@/stores/portfolio';
+
+const portfolioStore = usePortfolioStore();
 
 const authStore = useAuthStore();
 
@@ -30,8 +33,12 @@ const onSaveTemplate = async () => {
   try {
     isSaving.value = true;
     const res = await updateUserTemplate(selectedTemplateId.value);
+    const template = templates.value.find((x) => x.id === selectedTemplateId.value) as Template;
+
+    if (!!template && !!portfolioStore.data) {
+      portfolioStore.setPortfolio({ ...portfolioStore.data, template });
+    }
     authStore.setUser(res.user);
-    console.log('res', res);
   } catch (error) {
     console.error('Error:', error);
   } finally {

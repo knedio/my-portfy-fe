@@ -28,10 +28,20 @@ watch(
   () => props.data,
   (newData) => {
     if (newData) {
-      portfolioStore.setPortfolio(newData);
+      portfolioStore.setPortfolio({ ...portfolioStore.data, ...newData });
     }
   },
   { immediate: true, deep: true }
+);
+
+watch(
+  () => portfolioStore.data?.template?.name,
+  (templateName) => {
+    if (!templateName) return;
+
+    onSetTemplateComponent(templateName);
+  },
+  { immediate: true }
 );
 
 const onGetDetails = async () => {
@@ -44,15 +54,6 @@ const onGetDetails = async () => {
 
   portfolioStore.setPortfolio(data);
 
-  const template: string = portfolioStore?.data?.template.name.toLocaleLowerCase() ?? '';
-
-  if (!templateMap[template] && !props.isPreview) {
-    router.replace('/not-found'); // redirect if template not found
-    return;
-  }
-
-  component.value = markRaw(templateMap[template]); // prevent vue from making component reactive
-
   portfolioStore.setLoading(false);
 };
 
@@ -63,6 +64,19 @@ const templateMap: Record<string, any> = {
   aether: TemplateAetherView,
   orion: TemplateOrionView,
   mist: TemplateMistView,
+};
+
+const onSetTemplateComponent = (templateName: string) => {
+  if (!templateName) return;
+
+  const template = templateName.toLowerCase();
+
+  if (!templateMap[template] && !props.isPreview) {
+    router.replace('/not-found');
+    return;
+  }
+
+  component.value = markRaw(templateMap[template]); // prevent vue from making component reactive
 };
 
 onMounted(async () => {
