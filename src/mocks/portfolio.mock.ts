@@ -34,6 +34,7 @@ export const mockPortfolio: PortfolioDetails = {
       tech: 'VueJS, Typescript, Tailwind',
       image: 'https://picsum.photos/seed/1/800/600',
       link: '',
+      category: '',
     },
     {
       id: 2,
@@ -42,6 +43,7 @@ export const mockPortfolio: PortfolioDetails = {
       tech: 'Node.js, Socket.io, MongoDB',
       image: 'https://picsum.photos/seed/2/800/600',
       link: '',
+      category: '',
     },
     {
       id: 3,
@@ -50,6 +52,7 @@ export const mockPortfolio: PortfolioDetails = {
       tech: 'React, Redux, Firebase',
       image: 'https://picsum.photos/seed/3/800/600',
       link: '',
+      category: '',
     },
   ],
   skills: [

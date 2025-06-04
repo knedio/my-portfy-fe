@@ -47,5 +47,5 @@ export interface PortfolioDetails {
   educations: Education[];
   projects: Project[];
   skills: Skill[];
-  template: Template;
+  template?: Template;
 }
