@@ -28,9 +28,9 @@ apiClient.interceptors.response.use(
     if (error.response) {
       const { status } = error.response;
 
-      if (status === 401) {
+      if (status === 401 && localStorage.getItem('token')) {
         clearAuthToken();
-        window.location.href = '/login';
+        window.location.href = '/sign-in';
       }
     }
     return Promise.reject(error);
