@@ -40,7 +40,7 @@ const router = createRouter({
     {
       path: '/app',
       name: 'app',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, layout: 'UserLayout' },
       children: [
         {
           path: 'dashboard',

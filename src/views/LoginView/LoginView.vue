@@ -72,7 +72,7 @@ useMotion(signInForm, {
 </script>
 
 <template>
-  <div class="flex justify-center">
+  <div class="flex justify-center my-10">
     <div ref="signInForm" class="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow-lg">
       <h2 class="text-3xl font-bold text-center mb-6">Sign In</h2>
       <form @submit.prevent="onLogin" class="space-y-4">

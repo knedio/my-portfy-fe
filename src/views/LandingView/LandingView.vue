@@ -2,11 +2,11 @@
 import { useMotion } from '@vueuse/motion';
 import { ref } from 'vue';
 
-const hero = ref(null);
+const banner = ref(null);
 const features = ref(null);
 const cta = ref(null);
 
-useMotion(hero, {
+useMotion(banner, {
   initial: { opacity: 0, y: 100 },
   enter: {
     opacity: 1,
@@ -36,7 +36,7 @@ useMotion(cta, {
 
 <template>
   <div class="">
-    <div ref="hero" class="container mx-auto px-4 py-20">
+    <div ref="banner" class="banner container mx-auto px-4 py-20">
       <div class="text-center">
         <h1
           class="text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
@@ -107,5 +107,11 @@ useMotion(cta, {
 body {
   margin: 0;
   padding: 0;
+}
+.banner {
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

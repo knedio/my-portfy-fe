@@ -31,7 +31,7 @@ useMotion(contactForm, {
 </script>
 
 <template>
-  <div class="flex items-center justify-center">
+  <div class="flex items-center justify-center my-10">
     <div ref="contactForm" class="max-w-lg w-full bg-gray-800 p-8 rounded-lg shadow-lg">
       <h2 class="text-3xl font-bold text-center mb-6">Contact Us</h2>
       <form ref="form" @submit.prevent="onSubmit" class="space-y-4">

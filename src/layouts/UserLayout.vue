@@ -4,9 +4,13 @@ import HeaderNavComponent from '@/components/navs/HeaderNavComponent/HeaderNavCo
 
 <template>
   <HeaderNavComponent />
-  <main class="min-h-screen bg-gray-900 text-white mx-auto max-w-8xl">
+  <main class="min-h-screen bg-gray-900 text-white mx-auto max-w-8xl px-10">
     <RouterView class="" />
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  padding-top: 120px;
+}
+</style>
