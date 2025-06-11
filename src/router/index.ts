@@ -11,6 +11,7 @@ import AdminDashboardView from '@/views/admin/DashboardView/DashboardView.vue';
 import NotFoundView from '@/views/ErrorsView/NotFoundView/NotFoundView.vue';
 import { useAuthStore } from '@/stores/auth';
 import UsersView from '@/views/admin/UsersView/UsersView.vue';
+import RolesView from '@/views/admin/RolesView/RolesView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -82,6 +83,11 @@ const router = createRouter({
           path: 'users',
           name: 'users',
           component: UsersView,
+        },
+        {
+          path: 'roles',
+          name: 'roles',
+          component: RolesView,
         },
       ],
     },
