@@ -7,6 +7,9 @@ import DashboardView from '@/views/app/DashboardView/DashboardView.vue';
 import ProfileView from '@/views/app/ProfileView/ProfileView.vue';
 import PortfolioDetailsView from '@/views/app/PortfolioDetailsView/PortfolioDetailsView.vue';
 import TemplateRouterView from '@/views/TemplatesView/TemplateRouterView.vue';
+import AdminDashboardView from '@/views/admin/DashboardView/DashboardView.vue';
+import NotFoundView from '@/views/ErrorsView/NotFoundView/NotFoundView.vue';
+import { useAuthStore } from '@/stores/auth';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,6 +62,30 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: '/admin',
+      name: 'admin',
+      meta: { requiresAuth: true, requiresAdmin: true, layout: 'AdminLayout' },
+      children: [
+        {
+          path: 'dashboard',
+          name: 'admin-dashboard',
+          component: AdminDashboardView,
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: ProfileView,
+        },
+      ],
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      meta: { layout: 'EmptyLayout' },
+      component: NotFoundView,
+    },
+
     // {
     //   path: '/about',
     //   name: 'about',
@@ -71,14 +98,23 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
+  const authStore = useAuthStore();
 
-  if (to.meta.requiresAuth && !token) {
-    next('/sign-in'); // redirect if not logged in
-  } else if (token && to.name === 'sign-in') {
-    next('/app/dashboard'); // redirect to dashboard if auth
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    return next('/sign-in'); // redirect if not logged in
+  } else if (authStore.isAuthenticated && ['sign-in', 'home'].includes(to.name as string)) {
+    if (authStore.user?.role?.name === 'admin') {
+      return next('/admin/dashboard'); // redirect to admin dashboard if auth
+    } else {
+      return next('/app/dashboard'); // redirect to user dashboard if auth
+    }
+  } else if (
+    (to.meta.requiresAdmin && authStore.user?.role?.name !== 'admin') ||
+    (to.meta.requiresAuth && !to.meta.requiresAdmin && authStore.user?.role?.name === 'admin')
+  ) {
+    return next('/not-found');
   } else {
-    next();
+    return next();
   }
 });
 

@@ -1,12 +1,14 @@
 import { User } from '@/models/user.model';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(!!localStorage.getItem('token'));
 
   const storedUser = localStorage.getItem('user');
   const user = ref<User | null>(storedUser ? JSON.parse(storedUser) : null);
+
+  const isAdmin = computed(() => user.value?.role?.name === 'admin');
 
   const login = (token: string, userData: User) => {
     localStorage.setItem('token', token);
@@ -29,6 +31,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     isAuthenticated,
+    isAdmin,
     user,
     setUser,
     login,

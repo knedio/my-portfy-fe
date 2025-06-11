@@ -1,3 +1,4 @@
+import { Role } from './role.model';
 import { Template } from './template.model';
 
 export interface User {
@@ -21,4 +22,6 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   professionId: number;
+  roleId: number;
+  role: Role;
 }

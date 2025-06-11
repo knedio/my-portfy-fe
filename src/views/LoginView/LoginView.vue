@@ -37,7 +37,11 @@ const onLogin = handleSubmit(async (values) => {
     successMessage.value = 'Signed in successfully!';
     errorMessage.value = '';
 
-    router.push('/app/dashboard');
+    if (user.role?.name === 'admin') {
+      router.push('/admin/dashboard');
+    } else {
+      router.push('/app/dashboard');
+    }
   } catch (error) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const err = error as any;
