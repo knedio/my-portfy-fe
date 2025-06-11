@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -11,6 +11,7 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
+// ─── Request Interceptor ─────────────────────────────────────────────
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -22,6 +23,7 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// ─── Response Interceptor ────────────────────────────────────────────
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -37,6 +39,7 @@ apiClient.interceptors.response.use(
   }
 );
 
+// ─── Auth Helpers ────────────────────────────────────────────────────
 export const setAuthToken = (token: string) => {
   localStorage.setItem('token', token);
   apiClient.defaults.headers.Authorization = `Bearer ${token}`;
@@ -48,14 +51,18 @@ export const clearAuthToken = () => {
   delete apiClient.defaults.headers.Authorization;
 };
 
+// ─── Typed API Methods ───────────────────────────────────────────────
 export const api = {
-  get: <T>(url: string, params = {}, config = {}) => apiClient.get<T>(url, { ...config, params }),
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  post: <T>(url: string, data?: any, config?: any) => apiClient.post<T>(url, data, config),
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  put: <T>(url: string, data?: any, config?: any) => apiClient.put<T>(url, data, config),
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  delete: <T>(url: string, config?: any) => apiClient.delete<T>(url, config),
+  get: <T>(url: string, queryParams = {}, config: AxiosRequestConfig = {}) =>
+    apiClient.get<T>(url, { ...config, params: queryParams }),
+
+  post: <T>(url: string, data?: unknown, config: AxiosRequestConfig = {}) =>
+    apiClient.post<T>(url, data, config),
+
+  put: <T>(url: string, data?: unknown, config: AxiosRequestConfig = {}) =>
+    apiClient.put<T>(url, data, config),
+
+  delete: <T>(url: string, config: AxiosRequestConfig = {}) => apiClient.delete<T>(url, config),
 };
 
 export default apiClient;

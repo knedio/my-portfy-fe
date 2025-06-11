@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { X, CheckCircle, AlertCircle, AlertTriangle } from 'lucide-vue-next';
 import { ToastType } from '@/composables/useToast';
-import { computed, defineProps, defineEmits } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
   id: number;

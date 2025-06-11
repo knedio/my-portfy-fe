@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { User, LogOut, UserCircle, Users, ShieldCheck } from 'lucide-vue-next';
 import { RouterLink, useRouter } from 'vue-router';
 import { useMotion } from '@vueuse/motion';
 import { ref } from 'vue';
-import PortfyLogo from '@/assets/portfy.png';
-import { ChevronDown, User } from 'lucide-vue-next';
 import { useAuthStore } from '@/stores/auth';
+import PortfyLogo from '@/assets/portfy.png';
+import DropdownMenu from '@/components/buttons/DropdownMenu/DropdownMenu.vue';
 
 const router = useRouter();
 
@@ -37,39 +38,39 @@ const onLogout = () => {
         <img :src="PortfyLogo" alt="Portfy Logo" class="h-10 w-auto" />
       </RouterLink>
 
-      <div class="flex items-center gap-6">
+      <div class="flex items-center gap-4">
         <RouterLink v-if="!authStore.isAuthenticated" to="/" class="flex items-center"
           >Home</RouterLink
         >
 
         <template v-if="authStore.isAuthenticated">
-          <RouterLink to="/admin/dashboard" class="flex items-center">Dashboard</RouterLink>
+          <RouterLink to="/admin/dashboard" class="nav-item-link">Dashboard</RouterLink>
 
-          <div class="relative group">
-            <button class="flex items-center gap-1 text-white h-10">
-              <User class="w-4 h-10" />
-              <ChevronDown
-                class="w-4 h-10 transition-transform duration-300 group-hover:rotate-180"
-              />
-            </button>
-
-            <div
-              class="absolute right-0 mt-0 hidden group-hover:block bg-gray-700 rounded shadow-lg text-white z-50 w-45"
-            >
-              <button
-                @click="router.push('/admin/profile')"
-                class="block px-4 py-2 w-full text-left hover:bg-gray-600 text-center"
-              >
-                Profile
-              </button>
-              <button
-                @click="onLogout"
-                class="block px-4 py-2 w-full text-left hover:bg-gray-600 text-center"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
+          <DropdownMenu
+            label="Manage"
+            :items="[
+              { label: 'Users', to: '/admin/users', icon: Users },
+              { label: 'Roles', to: '/admin/roles', icon: ShieldCheck },
+            ]"
+          />
+          <DropdownMenu
+            :icon="User"
+            :items="[
+              {
+                label: 'Profile',
+                to: '/admin/profile',
+                icon: UserCircle,
+              },
+              {
+                label: 'Sign Out',
+                to: '',
+                icon: LogOut,
+                action: () => {
+                  onLogout();
+                },
+              },
+            ]"
+          />
         </template>
 
         <template v-else>
@@ -100,18 +101,6 @@ header {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
-  font-size: 1rem;
-}
-
-.nav a {
-  color: #fff;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  transition: color 0.3s ease-in-out;
-}
-
-.nav a:hover {
-  color: #8e44ad;
 }
 
 .hero {

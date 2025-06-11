@@ -1,10 +1,13 @@
 import { ProfileForm } from '@/models/forms/profile-form.model';
+import { SearchPayload } from '@/models/general/paginations/search-payload.model';
+import { SearchResponse } from '@/models/general/paginations/search-response.model';
 import { User } from '@/models/user.model';
 import { api } from '@/utils/api';
 import { AxiosResponse } from 'axios';
 
-export const getUsers = async () => {
-  return api.get('/users');
+export const getUsers = async (params: SearchPayload): Promise<SearchResponse<User>> => {
+  const response: AxiosResponse<SearchResponse<User>> = await api.get('/users', params);
+  return response.data;
 };
 
 export const getUserById = async (userId: number) => {

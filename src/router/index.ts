@@ -10,6 +10,7 @@ import TemplateRouterView from '@/views/TemplatesView/TemplateRouterView.vue';
 import AdminDashboardView from '@/views/admin/DashboardView/DashboardView.vue';
 import NotFoundView from '@/views/ErrorsView/NotFoundView/NotFoundView.vue';
 import { useAuthStore } from '@/stores/auth';
+import UsersView from '@/views/admin/UsersView/UsersView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -74,8 +75,13 @@ const router = createRouter({
         },
         {
           path: 'profile',
-          name: 'profile',
+          name: 'admin-profile',
           component: ProfileView,
+        },
+        {
+          path: 'users',
+          name: 'users',
+          component: UsersView,
         },
       ],
     },
