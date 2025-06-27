@@ -73,8 +73,8 @@ onMounted(async () => {
         @click="onSelectTemplate(template.id)"
       >
         <img
-          :src="`/public/assets/images/${template.preview_image}`"
-          :alt="`/public/assets/images/${template.preview_image}`"
+          :src="`/assets/images/${template.preview_image}`"
+          :alt="`/assets/images/${template.preview_image}`"
           class="w-full h-40 object-cover rounded mb-2"
         />
         <h2 class="text-xl font-semibold">{{ template.name }}</h2>
