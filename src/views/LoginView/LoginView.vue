@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { useForm } from 'vee-validate';
 import { loginUser } from '@/services/authService';
 import { useAuthStore } from '@/stores/auth';
+import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
 
 const router = useRouter();
 const auth = useAuthStore();
@@ -98,12 +99,7 @@ useMotion(signInForm, {
           />
           <p class="text-red-400 mt-1">{{ errors.password }}</p>
         </div>
-        <button
-          type="submit"
-          class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition duration-300"
-        >
-          Sign In
-        </button>
+        <BaseButton class="w-full" label=" Sign In" type="submit" :isLoading="isLoading" />
       </form>
       <p v-if="errorMessage" class="text-red-400 text-center mt-4">{{ errorMessage }}</p>
       <p v-if="successMessage" class="text-green-400 text-center mt-4">{{ successMessage }}</p>
