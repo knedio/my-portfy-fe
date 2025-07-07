@@ -3,15 +3,27 @@ import { Field } from 'vee-validate';
 import { ref, computed } from 'vue';
 import { Eye, EyeOff } from 'lucide-vue-next';
 
-const props = defineProps({
-  name: { type: String, required: true },
-  label: { type: String, default: '' },
-  type: { type: String, default: 'text' },
-  placeholder: { type: String, default: '' },
-  rows: { type: Number, default: 4 },
-  inputClass: { type: String, default: '' },
-  toggleable: { type: Boolean, default: false }, // supports show/hide password
-});
+const props = withDefaults(
+  defineProps<{
+    name: string;
+    label?: string;
+    type?: string;
+    placeholder?: string;
+    rows?: number;
+    inputClass?: string;
+    toggleable?: boolean;
+    disabled?: boolean;
+  }>(),
+  {
+    label: '',
+    type: 'text',
+    placeholder: '',
+    rows: 4,
+    inputClass: '',
+    toggleable: false,
+    disabled: false,
+  }
+);
 
 const emit = defineEmits<{
   (e: 'blur', event: FocusEvent): void;
@@ -45,7 +57,9 @@ const formatError = (error: unknown): string => {
           :class="[
             'w-full resize-none',
             inputClass || 'p-2 rounded bg-gray-800 border border-gray-700',
+            disabled && 'opacity-60 cursor-not-allowed',
           ]"
+          :disabled="disabled"
           @blur="
             field.onBlur($event);
             emit('blur', $event);
@@ -64,7 +78,9 @@ const formatError = (error: unknown): string => {
             :class="[
               'w-full pr-10',
               inputClass || 'p-2 rounded bg-gray-800 border border-gray-700',
+              disabled && 'opacity-60 cursor-not-allowed',
             ]"
+            :disabled="disabled"
             @blur="
               field.onBlur($event);
               emit('blur', $event);

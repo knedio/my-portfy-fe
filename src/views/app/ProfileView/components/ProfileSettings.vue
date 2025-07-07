@@ -19,6 +19,7 @@ const storageUrl = `${VITE_API_BASE_URL}/storage/`;
 const auth = useAuthStore();
 const { showToast } = useToast();
 
+const isLoading = ref(true);
 const isUploading = ref(false);
 const isSaving = ref(false);
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -114,8 +115,14 @@ const onSave = handleSubmit(async (values) => {
 });
 
 onMounted(async () => {
-  await onGetUserProfile();
-  await onGetProfessions();
+  try {
+    await onGetUserProfile();
+    await onGetProfessions();
+  } finally {
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 3000);
+  }
 });
 </script>
 
@@ -151,7 +158,7 @@ onMounted(async () => {
         <button
           @click="onPhotoClick"
           class="mt-4 w-full text-sm text-blue-400 hover:text-blue-300 disabled:opacity-50"
-          :disabled="isUploading"
+          :disabled="isUploading || isLoading"
         >
           {{ isUploading ? 'Uploading...' : 'Change Photo' }}
         </button>
@@ -164,12 +171,14 @@ onMounted(async () => {
             name="firstName"
             label="First Name"
             placeholder="Your first name"
+            :disabled="isLoading"
           />
           <FormInput
             inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             name="lastName"
             label="Last Name"
             placeholder="Your last name"
+            :disabled="isLoading"
           />
           <FormInput
             inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -177,6 +186,7 @@ onMounted(async () => {
             name="email"
             label="Email"
             placeholder="Enter Email"
+            :disabled="isLoading"
           />
           <FormInput
             inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -184,25 +194,31 @@ onMounted(async () => {
             name="username"
             label="Username"
             placeholder="Enter Username"
+            :disabled="isLoading"
           />
           <FormSelect
             name="professionId"
             label="Profession"
             :options="professionOptions"
             inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            :disabled="isLoading"
           />
           <FormInput
             inputClass="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             name="location"
             label="Location"
             placeholder="Enter Location"
+            :disabled="isLoading"
           />
         </div>
       </div>
     </div>
 
     <div class="mt-5 flex justify-end">
-      <BaseButton class="ml-auto" label="Save Changes" @click="onSave" />
+      <div v-if="isLoading" class="flex justify-center items-center">
+        <Loader2 class="w-8 h-8 text-white animate-spin" />
+      </div>
+      <BaseButton v-else class="ml-auto" label="Save Changes" @click="onSave" />
     </div>
   </div>
 </template>

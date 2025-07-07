@@ -7,16 +7,19 @@ interface Option {
   value: string | number;
 }
 
-defineProps<{
+const props = defineProps<{
   name: string;
   label?: string;
   options: Option[];
   inputClass?: string;
+  disabled?: boolean;
 }>();
 
 const isOpen = ref(false);
 
 const onToggleDropdown = () => {
+  if (props.disabled) return;
+
   isOpen.value = !isOpen.value;
 };
 
@@ -28,11 +31,11 @@ const onCloseDropdown = () => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const onSelectOption = (field: any, value: string | number) => {
+  if (props.disabled) return;
+
   field.onChange(value);
   field.onBlur();
   isOpen.value = false;
-
-  console.log('onSelectOption');
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,13 +55,14 @@ const formatError = (error: any): string => {
       <div class="relative">
         <div
           role="button"
-          tabindex="0"
+          :tabindex="disabled ? -1 : 0"
           @click="onToggleDropdown"
           @blur="onCloseDropdown"
           :class="[
             'flex justify-between items-center text-left w-full',
             inputClass ||
               'p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500',
+            disabled && 'opacity-60 cursor-not-allowed',
           ]"
         >
           <span :class="field.value ? 'text-white' : 'text-gray-400'">
