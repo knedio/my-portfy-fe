@@ -119,9 +119,7 @@ onMounted(async () => {
     await onGetUserProfile();
     await onGetProfessions();
   } finally {
-    setTimeout(() => {
-      isLoading.value = false;
-    }, 3000);
+    isLoading.value = false;
   }
 });
 </script>
