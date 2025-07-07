@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { User, LogOut, UserCircle, Users, ShieldCheck } from 'lucide-vue-next';
+import { User, LogOut, UserCircle, Users, ShieldCheck, LayoutTemplate } from 'lucide-vue-next';
 import { RouterLink, useRouter } from 'vue-router';
 import { useMotion } from '@vueuse/motion';
 import { ref } from 'vue';
@@ -51,6 +51,7 @@ const onLogout = () => {
             :items="[
               { label: 'Users', to: '/admin/users', icon: Users },
               { label: 'Roles', to: '/admin/roles', icon: ShieldCheck },
+              { label: 'Templates', to: '/admin/templates', icon: LayoutTemplate },
             ]"
           />
           <DropdownMenu

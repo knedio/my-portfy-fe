@@ -12,6 +12,7 @@ import NotFoundView from '@/views/ErrorsView/NotFoundView/NotFoundView.vue';
 import { useAuthStore } from '@/stores/auth';
 import UsersView from '@/views/admin/UsersView/UsersView.vue';
 import RolesView from '@/views/admin/RolesView/RolesView.vue';
+import TemplatesView from '@/views/admin/TemplatesView/TemplatesView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -88,6 +89,11 @@ const router = createRouter({
           path: 'roles',
           name: 'roles',
           component: RolesView,
+        },
+        {
+          path: 'templates',
+          name: 'templates',
+          component: TemplatesView,
         },
       ],
     },

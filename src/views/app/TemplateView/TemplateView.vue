@@ -56,7 +56,7 @@ onMounted(async () => {
         :class="{ 'border-purple-500': selectedTemplateId === template.id }"
         @click="onSelectTemplate(template.id)"
       >
-        <img :src="template.preview_image" alt="" class="w-full h-40 object-cover rounded mb-2" />
+        <img :src="template.previewImage" alt="" class="w-full h-40 object-cover rounded mb-2" />
         <h2 class="text-xl font-semibold">{{ template.name }}</h2>
         <p class="text-gray-400 text-sm">{{ template.description }}</p>
       </div>
