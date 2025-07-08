@@ -1,36 +1,35 @@
 <script setup lang="ts">
 import { usePortfolioStore } from '@/stores/portfolio';
-import { defineComponent, h } from 'vue';
 import { storeToRefs } from 'pinia';
 
 const portfolioStore = usePortfolioStore();
 const { data } = storeToRefs(portfolioStore);
 
-const IconComponent = (d: string) =>
-  defineComponent({
-    name: 'CustomIcon',
-    render() {
-      return h(
-        'svg',
-        {
-          xmlns: 'http://www.w3.org/2000/svg',
-          fill: 'none',
-          viewBox: '0 0 24 24',
-          stroke: 'currentColor',
-          class: 'w-full h-full',
-        },
-        [
-          h('path', {
-            d,
-            stroke: 'currentColor',
-            'stroke-width': 2,
-            'stroke-linecap': 'round',
-            'stroke-linejoin': 'round',
-          }),
-        ]
-      );
-    },
-  });
+// const IconComponent = (d: string) =>
+//   defineComponent({
+//     name: 'CustomIcon',
+//     render() {
+//       return h(
+//         'svg',
+//         {
+//           xmlns: 'http://www.w3.org/2000/svg',
+//           fill: 'none',
+//           viewBox: '0 0 24 24',
+//           stroke: 'currentColor',
+//           class: 'w-full h-full',
+//         },
+//         [
+//           h('path', {
+//             d,
+//             stroke: 'currentColor',
+//             'stroke-width': 2,
+//             'stroke-linecap': 'round',
+//             'stroke-linejoin': 'round',
+//           }),
+//         ]
+//       );
+//     },
+//   });
 </script>
 <template>
   <section id="skills" class="section bg-gray-800">
@@ -47,9 +46,9 @@ const IconComponent = (d: string) =>
           class="skill-card bg-gray-900/50 text-white"
         >
           <div class="text-center">
-            <div class="w-16 h-16 mx-auto mb-4 text-blue-400">
+            <!-- <div class="w-16 h-16 mx-auto mb-4 text-blue-400">
               <component :is="IconComponent(skill.icon)" />
-            </div>
+            </div> -->
             <h3 class="text-base sm:text-lg font-semibold">{{ skill.name }}</h3>
             <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
               <div

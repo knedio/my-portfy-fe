@@ -1,36 +1,35 @@
 <script setup lang="ts">
 import { usePortfolioStore } from '@/stores/portfolio';
 import { storeToRefs } from 'pinia';
-import { defineComponent, h } from 'vue';
 
 const portfolioStore = usePortfolioStore();
 const { data } = storeToRefs(portfolioStore);
 
-const IconComponent = (d: string) =>
-  defineComponent({
-    name: 'CustomIcon',
-    render() {
-      return h(
-        'svg',
-        {
-          xmlns: 'http://www.w3.org/2000/svg',
-          fill: 'none',
-          viewBox: '0 0 24 24',
-          stroke: 'currentColor',
-          class: 'w-full h-full',
-        },
-        [
-          h('path', {
-            d,
-            stroke: 'currentColor',
-            'stroke-width': 2,
-            'stroke-linecap': 'round',
-            'stroke-linejoin': 'round',
-          }),
-        ]
-      );
-    },
-  });
+// const IconComponent = (d: string) =>
+//   defineComponent({
+//     name: 'CustomIcon',
+//     render() {
+//       return h(
+//         'svg',
+//         {
+//           xmlns: 'http://www.w3.org/2000/svg',
+//           fill: 'none',
+//           viewBox: '0 0 24 24',
+//           stroke: 'currentColor',
+//           class: 'w-full h-full',
+//         },
+//         [
+//           h('path', {
+//             d,
+//             stroke: 'currentColor',
+//             'stroke-width': 2,
+//             'stroke-linecap': 'round',
+//             'stroke-linejoin': 'round',
+//           }),
+//         ]
+//       );
+//     },
+//   });
 </script>
 
 <template>
@@ -48,7 +47,7 @@ const IconComponent = (d: string) =>
           :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: index * 100 } }"
         >
           <!-- <div class="skill-icon" v-html="category.icon"></div> -->
-          <component class="skill-icon" :is="IconComponent(skill.icon)" />
+          <!-- <component class="skill-icon" :is="IconComponent(skill.icon)" /> -->
 
           <h3>{{ skill.name }}</h3>
           <div class="experience-bar">

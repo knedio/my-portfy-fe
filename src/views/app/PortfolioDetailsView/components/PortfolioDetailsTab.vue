@@ -285,7 +285,7 @@ onMounted(async () => {
         <FormInput :name="`skills[${index}].name`" placeholder="Skill name" />
         <FormInput :name="`skills[${index}].level`" placeholder="Skill level (0-10)" />
         <FormInput :name="`skills[${index}].experience`" placeholder="Skill experience" />
-        <FormInput :name="`skills[${index}].icon`" placeholder="Icon" />
+        <!-- <FormInput :name="`skills[${index}].icon`" placeholder="Icon" /> -->
         <FormInput
           :name="`skills[${index}].subSkillsText`"
           placeholder="Sub-skills (comma separated)"
