@@ -6,6 +6,7 @@ import { useForm } from 'vee-validate';
 import { registerUser } from '@/services/authService';
 import { RegistrationForm } from '@/models/forms/registration-form.model';
 import FormInput from '@/components/forms/FormInput.vue';
+import { encryptAES } from '@/utils/crypto';
 
 const schema = yup.object({
   firstName: yup.string().required('First name is required'),
@@ -40,7 +41,13 @@ const isSubmitting = ref(false);
 const onRegister = handleSubmit(async (values) => {
   try {
     isSubmitting.value = true;
-    await registerUser(values);
+    await registerUser({
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      username: values.username,
+      password: encryptAES(values.password),
+    });
     successMessage.value = 'Registered successfully!';
     setTimeout(() => (successMessage.value = ''), 3000);
 
