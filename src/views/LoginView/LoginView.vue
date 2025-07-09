@@ -7,6 +7,7 @@ import { useForm } from 'vee-validate';
 import { loginUser } from '@/services/authService';
 import { useAuthStore } from '@/stores/auth';
 import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
+import { encryptAES } from '@/utils/crypto';
 
 const router = useRouter();
 const auth = useAuthStore();
@@ -31,7 +32,7 @@ const isLoading = ref(false);
 const onLogin = handleSubmit(async (values) => {
   isLoading.value = true;
   try {
-    const { user, token } = await loginUser(values.login, values.password);
+    const { user, token } = await loginUser(values.login, encryptAES(values.password));
 
     auth.login(token, user);
 
