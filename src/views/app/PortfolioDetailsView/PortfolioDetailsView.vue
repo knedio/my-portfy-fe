@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import FormTabs from '@/components/forms/FormTab.vue';
-import PortfolioDetailsTab from './components/PortfolioDetailsTab.vue';
+import PortfolioDetailsTab from './components/PortfolioDetailsTab/PortfolioDetailsTab.vue';
 import PortfolioTemplateTab from './components/PortfolioTemplateTab.vue';
 import TemplateRouterView from '@/views/TemplatesView/TemplateRouterView.vue';
 import { PortfolioDetails } from '@/models/portfolio.model';
