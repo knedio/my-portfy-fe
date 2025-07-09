@@ -191,7 +191,7 @@ const onSubmit = handleSubmit(async (formValues) => {
   </section>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .contact-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -274,13 +274,37 @@ const onSubmit = handleSubmit(async (formValues) => {
 }
 
 .form-group {
-  margin-bottom: var(--space-4);
-
   label {
     display: block;
     margin-bottom: var(--space-1);
     font-size: var(--font-size-sm);
-    color: var(--aether-text-secondary);
+    color: var(--aether-text-primary); // dark text for labels
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    background: #f9f9fb; // soft gray for subtle contrast
+    border: 1px solid #ccc; // visible light border
+    border-radius: 8px;
+    color: #333; // dark readable text
+    padding: 0.625rem 0.75rem;
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    transition: all 0.3s ease;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--aether-primary);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(189, 147, 249, 0.25);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #999; // subtle but visible
   }
 }
 

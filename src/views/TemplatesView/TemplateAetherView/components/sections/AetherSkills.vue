@@ -4,59 +4,6 @@ import { storeToRefs } from 'pinia';
 
 const portfolioStore = usePortfolioStore();
 const { data } = storeToRefs(portfolioStore);
-
-// const IconComponent = (d: string) =>
-//   defineComponent({
-//     name: 'CustomIcon',
-//     render() {
-//       return h(
-//         'svg',
-//         {
-//           xmlns: 'http://www.w3.org/2000/svg',
-//           fill: 'none',
-//           viewBox: '0 0 24 24',
-//           stroke: 'currentColor',
-//           class: 'w-full h-full',
-//         },
-//         [
-//           h('path', {
-//             d,
-//             stroke: 'currentColor',
-//             'stroke-width': 2,
-//             'stroke-linecap': 'round',
-//             'stroke-linejoin': 'round',
-//           }),
-//         ]
-//       );
-//     },
-//   });
-
-// const skillCategories = [
-//   {
-//     title: 'Frontend',
-//     icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
-//     years: '5+ years',
-//     skills: ['HTML/CSS', 'JavaScript', 'TypeScript', 'Vue.js', 'React', 'Tailwind CSS'],
-//   },
-//   {
-//     title: 'Backend',
-//     icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>',
-//     years: '4+ years',
-//     skills: ['Node.js', 'Express', 'Python', 'Django', 'SQL', 'NoSQL'],
-//   },
-//   {
-//     title: 'DevOps',
-//     icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>',
-//     years: '3+ years',
-//     skills: ['Docker', 'Kubernetes', 'CI/CD', 'AWS', 'Git', 'GitHub Actions'],
-//   },
-//   {
-//     title: 'UI/UX',
-//     icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>',
-//     years: '4+ years',
-//     skills: ['Figma', 'Adobe XD', 'Sketch', 'User Research', 'Wireframing', 'Prototyping'],
-//   },
-// ];
 </script>
 
 <template>
@@ -71,13 +18,10 @@ const { data } = storeToRefs(portfolioStore);
           class="skill-card glass-card"
           v-motion
           :initial="{ opacity: 0, y: 50 }"
-          :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: index * 100 } }"
+          :visible="{ opacity: 1, y: 0, transition: { duration: 300, delay: index * 50 } }"
         >
-          <!-- <div class="skill-icon" v-html="skill.icon"></div> -->
-          <!-- <component class="skill-icon" :is="IconComponent(skill.icon)" /> -->
-
           <h3>{{ skill.name }}</h3>
-          <div class="experience-bar">
+          <div v-if="skill.experience" class="experience-bar">
             <div class="experience-progress"></div>
             <span>{{ skill.experience }}</span>
           </div>
@@ -86,32 +30,6 @@ const { data } = storeToRefs(portfolioStore);
           </ul>
         </div>
       </div>
-
-      <!-- <div
-        class="technologies"
-        v-motion
-        :initial="{ opacity: 0 }"
-        :visible="{ opacity: 1, transition: { duration: 800, delay: 400 } }"
-      >
-        <h3>Technologies I've Worked With</h3>
-        <div class="tech-tags">
-          <span class="tech-tag">JavaScript</span>
-          <span class="tech-tag">TypeScript</span>
-          <span class="tech-tag">Vue.js</span>
-          <span class="tech-tag">React</span>
-          <span class="tech-tag">Node.js</span>
-          <span class="tech-tag">Express</span>
-          <span class="tech-tag">MongoDB</span>
-          <span class="tech-tag">PostgreSQL</span>
-          <span class="tech-tag">Docker</span>
-          <span class="tech-tag">Tailwind CSS</span>
-          <span class="tech-tag">SASS</span>
-          <span class="tech-tag">Git</span>
-          <span class="tech-tag">AWS</span>
-          <span class="tech-tag">Firebase</span>
-          <span class="tech-tag">GraphQL</span>
-        </div>
-      </div> -->
     </div>
   </section>
 </template>

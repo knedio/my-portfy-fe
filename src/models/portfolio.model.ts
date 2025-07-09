@@ -47,5 +47,14 @@ export interface PortfolioDetails {
   educations: Education[];
   projects: Project[];
   skills: Skill[];
+  experiences: Experience[];
   template?: Template;
+}
+
+export interface Experience {
+  id?: number;
+  position: string;
+  company: string;
+  duration: string;
+  description: string[];
 }

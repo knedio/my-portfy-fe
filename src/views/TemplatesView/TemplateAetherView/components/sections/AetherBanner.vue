@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usePortfolioStore } from '@/stores/portfolio';
+import { scrollToSection } from '@/utils/helpers';
 import { storeToRefs } from 'pinia';
 
 const portfolioStore = usePortfolioStore();
@@ -28,8 +29,15 @@ const { data } = storeToRefs(portfolioStore);
             :initial="{ opacity: 0, y: 20 }"
             :enter="{ opacity: 1, y: 0, transition: { duration: 500, delay: 800 } }"
           >
-            <a href="#contact" class="button">Let's Create Together</a>
-            <a href="#projects" class="button button-outline">View Portfolio</a>
+            <a href="#contact" class="button" @click.prevent="scrollToSection('#contact')"
+              >Let's Create Together</a
+            >
+            <a
+              href="#projects"
+              class="button button-outline"
+              @click.prevent="scrollToSection('#projects')"
+              >View Portfolio</a
+            >
           </div>
         </div>
 

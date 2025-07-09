@@ -44,7 +44,7 @@ const { data } = storeToRefs(portfolioStore);
           class="skill-card glass-card"
           v-motion
           :initial="{ opacity: 0, y: 50 }"
-          :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: index * 100 } }"
+          :visible="{ opacity: 1, y: 0, transition: { duration: 300, delay: index * 50 } }"
         >
           <!-- <div class="skill-icon" v-html="category.icon"></div> -->
           <!-- <component class="skill-icon" :is="IconComponent(skill.icon)" /> -->

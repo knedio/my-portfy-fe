@@ -1,4 +1,4 @@
-import { Education, PortfolioDetails, Project, Skill } from '@/models/portfolio.model';
+import { Education, Experience, PortfolioDetails, Project, Skill } from '@/models/portfolio.model';
 
 export const PORTFOLIO_SCROLL_CONTAINER_SELECTOR = 'portfolio-preview-wrapper';
 
@@ -27,6 +27,13 @@ export const PORTFOLIO_FORM_SKILLS: Skill = {
   subSkillsText: '',
 };
 
+export const PORTFOLIO_FORM_EXPERIENCES: Experience = {
+  position: '',
+  company: '',
+  duration: '',
+  description: [''],
+};
+
 export const PORTFOLIO_FORM: PortfolioDetails = {
   firstName: '',
   lastName: '',
@@ -45,4 +52,5 @@ export const PORTFOLIO_FORM: PortfolioDetails = {
   educations: [PORTFOLIO_FORM_EDUCATIONS],
   projects: [PORTFOLIO_FORM_PROJECTS],
   skills: [PORTFOLIO_FORM_SKILLS],
+  experiences: [PORTFOLIO_FORM_EXPERIENCES],
 };

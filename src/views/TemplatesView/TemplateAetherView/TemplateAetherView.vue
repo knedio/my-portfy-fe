@@ -3,6 +3,7 @@ import Header from './components/layout/AetherHeader.vue';
 import Banner from './components/sections/AetherBanner.vue';
 import AboutSection from './components/sections/AetherAbout.vue';
 import SkillsSection from './components/sections/AetherSkills.vue';
+import ExperienceSection from './components/sections/AetherExperience.vue';
 import ProjectsSection from './components/sections/AetherProjects.vue';
 import ContactSection from './components/sections/AetherContact.vue';
 import Footer from './components/layout/AetherFooter.vue';
@@ -21,6 +22,7 @@ const portfolioStore = usePortfolioStore();
       <div v-if="!portfolioStore.isLoading">
         <Banner />
         <AboutSection />
+        <ExperienceSection />
         <SkillsSection />
         <ProjectsSection />
         <ContactSection />

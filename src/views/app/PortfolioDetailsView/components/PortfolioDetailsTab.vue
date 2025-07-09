@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from 'vue';
 import { useForm, useFieldArray } from 'vee-validate';
 import * as yup from 'yup';
 import { Save } from 'lucide-vue-next';
-import { Education, PortfolioDetails, Project, Skill } from '@/models/portfolio.model';
+import { Education, Experience, PortfolioDetails, Project, Skill } from '@/models/portfolio.model';
 import FormInput from '@/components/forms/FormInput.vue';
 import BaseButton from '@/components/buttons/BaseButton/BaseButton.vue';
 import {
@@ -12,6 +12,7 @@ import {
   PORTFOLIO_FORM,
   PORTFOLIO_FORM_PROJECTS,
   PORTFOLIO_FORM_SKILLS,
+  PORTFOLIO_FORM_EXPERIENCES,
 } from '@/models/constants/portfolio-form.constants';
 
 const emit = defineEmits<{
@@ -78,6 +79,21 @@ const schema = yup.object({
       })
     )
     .min(1, 'At least one skill is required'),
+
+  experiences: yup
+    .array()
+    .of(
+      yup.object({
+        position: yup.string().required('Position is required'),
+        company: yup.string().required('Company is required'),
+        duration: yup.string().required('Duration is required'),
+        description: yup
+          .array()
+          .of(yup.string().required('Description item is required'))
+          .min(1, 'At least one description is required'),
+      })
+    )
+    .min(1, 'At least one experience is required'),
 });
 
 const { values, handleSubmit, setValues } = useForm({
@@ -109,6 +125,11 @@ const {
   push: addSkill,
   update: updateSkill,
 } = useFieldArray<Skill>('skills');
+const {
+  fields: experiences,
+  push: addExperience,
+  remove: removeExperience,
+} = useFieldArray<Experience>('experiences');
 
 const onSubmit = handleSubmit(async (formValues) => {
   try {
@@ -134,6 +155,7 @@ const onGetDetails = async () => {
       banner: data?.banner ?? { title: '', description: '', btnLabel: '' },
       educations: data.educations?.length ? data.educations : [PORTFOLIO_FORM_EDUCATIONS],
       projects: data.projects?.length ? data.projects : [PORTFOLIO_FORM_PROJECTS],
+      experiences: data.experiences?.length ? data.experiences : [PORTFOLIO_FORM_EXPERIENCES],
       skills: data.skills?.length
         ? data.skills.map((skill) => ({
             ...skill,
@@ -296,6 +318,64 @@ onMounted(async () => {
           Remove
         </button>
       </div>
+      <div id="experience-form" class="mb-5">
+        <h2 class="text-xl font-semibold mb-2">Experience</h2>
+        <div
+          v-for="(exp, index) in experiences"
+          :key="exp.key"
+          class="space-y-2 mb-4 border-b border-gray-700 pb-4"
+        >
+          <FormInput :name="`experiences[${index}].position`" placeholder="Job Title" />
+          <FormInput :name="`experiences[${index}].company`" placeholder="Company" />
+          <FormInput
+            :name="`experiences[${index}].duration`"
+            placeholder="Duration (e.g. 2020–2022)"
+          />
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-white">Descriptions</label>
+            <div
+              v-for="(desc, descIdx) in values.experiences?.[index]?.description || []"
+              :key="descIdx"
+              class="flex gap-2 items-center"
+            >
+              <FormInput
+                class="w-full"
+                :name="`experiences[${index}].description[${descIdx}]`"
+                placeholder="Description bullet"
+              />
+              <button
+                class="text-red-400 hover:underline text-sm"
+                @click="values.experiences[index].description.splice(descIdx, 1)"
+              >
+                Remove
+              </button>
+            </div>
+
+            <button
+              class="text-blue-400 hover:underline text-sm mt-1"
+              @click="values.experiences[index].description.push('')"
+            >
+              + Add Description
+            </button>
+          </div>
+
+          <button
+            @click="removeExperience(index)"
+            class="text-red-400 hover:underline text-sm mt-2"
+          >
+            Remove Experience
+          </button>
+        </div>
+
+        <button
+          @click="addExperience({ position: '', company: '', duration: '', description: [''] })"
+          class="text-blue-400 hover:underline text-sm"
+        >
+          + Add Experience
+        </button>
+      </div>
+
       <button
         @click="addSkill(PORTFOLIO_FORM_SKILLS)"
         class="text-blue-400 hover:underline text-sm"

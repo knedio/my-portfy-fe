@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import { Menu, X } from 'lucide-vue-next';
+import { scrollToSection } from '@/utils/helpers';
 
-const navLinks = [
+const links = [
+  { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
   { name: 'Skills', href: '#skills' },
   { name: 'Projects', href: '#projects' },
@@ -9,85 +12,117 @@ const navLinks = [
 ];
 
 const isScrolled = ref(false);
-const mobileMenuOpen = ref(false);
+const isMobileMenuOpen = ref(false);
 
-const checkScroll = () => {
+const onHandleScroll = () => {
   isScrolled.value = window.scrollY > 50;
 };
 
+const onScrollToSection = (href: string) => {
+  isMobileMenuOpen.value = false;
+  scrollToSection(href);
+};
+
 onMounted(() => {
-  window.addEventListener('scroll', checkScroll);
-  checkScroll();
+  window.addEventListener('scroll', onHandleScroll);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', checkScroll);
+  window.removeEventListener('scroll', onHandleScroll);
 });
-
-const toggleMobileMenu = () => {
-  mobileMenuOpen.value = !mobileMenuOpen.value;
-};
-
-const closeMenu = () => {
-  mobileMenuOpen.value = false;
-};
 </script>
 
 <template>
-  <header :class="{ scrolled: isScrolled }">
-    <div class="container header-container">
-      <a href="#" class="logo">aether</a>
+  <header class="header" :class="{ scrolled: isScrolled }">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-text"></span>
+        </div>
 
-      <button class="mobile-menu-button" @click="toggleMobileMenu" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <!-- Desktop Menu -->
+        <nav class="nav-desktop">
+          <ul>
+            <li v-for="link in links" :key="link.name">
+              <a :href="link.href" @click.prevent="onScrollToSection(link.href)">
+                {{ link.name }}
+              </a>
+            </li>
+          </ul>
+        </nav>
 
-      <nav :class="{ 'mobile-open': mobileMenuOpen }">
-        <ul class="nav-links">
-          <li v-for="link in navLinks" :key="link.name">
-            <a :href="link.href" @click="closeMenu">{{ link.name }}</a>
-          </li>
-        </ul>
-      </nav>
+        <!-- Mobile Menu Toggle -->
+        <button
+          class="mobile-toggle"
+          @click="isMobileMenuOpen = !isMobileMenuOpen"
+          aria-label="Toggle menu"
+        >
+          <Menu v-if="!isMobileMenuOpen" :size="24" />
+          <X v-else :size="24" />
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div class="mobile-menu" :class="{ 'mobile-menu-open': isMobileMenuOpen }">
+        <nav>
+          <ul>
+            <li v-for="link in links" :key="link.name">
+              <a :href="link.href" @click.prevent="scrollToSection(link.href)">
+                {{ link.name }}
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </header>
 </template>
 
-<style scoped lang="scss">
-header {
+<style scoped>
+.header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: var(--z-elevated);
+  z-index: 1000;
   padding: var(--space-3) 0;
-  transition:
-    background-color var(--transition-base),
-    box-shadow var(--transition-base);
-
-  &.scrolled {
-    background-color: rgba(11, 16, 31, 0.85);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-md);
-  }
+  /* background: rgba(25, 15, 35, 0.3); */
+  /* backdrop-filter: blur(8px); */
 }
 
-.header-container {
+.header.scrolled {
+  /* background: rgba(25, 15, 35, 0.8);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); */
+
+  background-color: #f9f9fb;
+  border-bottom: 1px solid #ddd;
+}
+
+.container {
+  margin: 0 auto;
+}
+
+.header-content {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
-.logo {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-semibold);
-  background: linear-gradient(90deg, var(--aether-accent-light), var(--aether-primary-light));
-  -webkit-background-clip: text;
+.logo-text {
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #ff79c6, #bd93f9);
   background-clip: text;
-  color: transparent;
-  display: inline-block;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+
+.nav-desktop ul {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links {
@@ -111,77 +146,82 @@ header {
   }
 }
 
-.mobile-menu-button {
-  display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 24px;
-  height: 18px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
+.nav-desktop a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #ff79c6, #bd93f9);
+  transition: width 0.3s ease;
+}
 
-  span {
-    display: block;
-    height: 2px;
-    width: 100%;
-    background-color: var(--aether-text-primary);
-    transition:
-      transform var(--transition-fast),
-      opacity var(--transition-fast);
-  }
+.nav-desktop a:hover::after {
+  width: 100%;
+}
+
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: none;
 }
 
 @media (max-width: 768px) {
-  .mobile-menu-button {
-    display: flex;
-    z-index: 11;
+  .nav-desktop {
+    display: none;
   }
 
-  .mobile-open {
-    .mobile-menu-button {
-      span:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-      }
-
-      span:nth-child(2) {
-        opacity: 0;
-      }
-
-      span:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-      }
-    }
+  .mobile-toggle {
+    display: block;
   }
 
-  nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 70%;
-    max-width: 300px;
-    background-color: var(--aether-bg-card);
-    box-shadow: var(--shadow-lg);
-    transform: translateX(100%);
-    transition: transform var(--transition-base);
-    padding: var(--space-7) var(--space-4);
-    z-index: 10;
+  .mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(25, 15, 35, 0.95);
+    padding: 1rem 0;
+    display: none;
+    transform: translateY(-1rem);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+  }
 
-    &.mobile-open {
-      transform: translateX(0);
-    }
+  .mobile-menu-open {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+  }
 
-    .nav-links {
-      flex-direction: column;
-      gap: var(--space-3);
+  .mobile-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-      a {
-        display: block;
-        padding: var(--space-2);
-      }
-    }
+  .mobile-menu li {
+    margin: 0;
+  }
+
+  .mobile-menu a {
+    display: block;
+    padding: 1rem 2rem;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu a:hover {
+    background: rgba(255, 255, 255, 0.1);
   }
 }
 </style>
