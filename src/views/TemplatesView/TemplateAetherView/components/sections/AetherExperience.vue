@@ -10,7 +10,7 @@ const { data } = storeToRefs(portfolioStore);
     <div class="container">
       <h2 class="section-heading">Professional Experience</h2>
 
-      <div class="experiences-grid">
+      <div class="experiences-grid grid grid-cols-2 gap-4 sm:grid-cols-1">
         <div
           v-for="(exp, index) in data?.experiences"
           :key="exp.position + exp.company"
@@ -38,12 +38,6 @@ const { data } = storeToRefs(portfolioStore);
 </template>
 
 <style scoped lang="scss">
-.experiences-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
-}
-
 .experience-card {
   padding: var(--space-4);
   border-radius: var(--border-radius);
