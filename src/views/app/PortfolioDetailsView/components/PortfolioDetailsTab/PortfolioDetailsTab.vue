@@ -33,7 +33,7 @@ const schema = yup.object({
   contactEmail: yup.string().email('Invalid email').required('Email is required'),
   location: yup.string().required('Location is required'),
   mobileNumber: yup.string().required('Mobile Number is required'),
-  resume: yup.string().required('Resume is required'),
+  resumeUrl: yup.string().required('Resume is required'),
   about: yup.object({
     title: yup.string().required('About title is required'),
     description: yup.string().required('About description is required'),
