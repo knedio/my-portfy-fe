@@ -124,10 +124,7 @@ const onSubmit = handleSubmit(
     } catch (error) {
       console.log('Error:', error);
     } finally {
-      console.log('isSaving.value', isSaving.value);
-      setTimeout(() => {
-        isSaving.value = false;
-      }, 3000);
+      isSaving.value = false;
     }
   },
   (errors) => {
