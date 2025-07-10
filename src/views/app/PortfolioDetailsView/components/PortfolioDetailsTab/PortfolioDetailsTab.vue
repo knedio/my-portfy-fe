@@ -32,6 +32,8 @@ const schema = yup.object({
   lastName: yup.string().required('Last name is required'),
   contactEmail: yup.string().email('Invalid email').required('Email is required'),
   location: yup.string().required('Location is required'),
+  mobileNumber: yup.string().required('Mobile Number is required'),
+  resume: yup.string().required('Resume is required'),
   about: yup.object({
     title: yup.string().required('About title is required'),
     description: yup.string().required('About description is required'),
@@ -137,11 +139,14 @@ const onGetDetails = async () => {
   const { data } = await getPortfolioDetails();
 
   if (data) {
+    console.log('data', data);
     setValues({
       firstName: data?.firstName || '',
       lastName: data?.lastName || '',
       contactEmail: data?.contactEmail || '',
       location: data?.location || '',
+      mobileNumber: data?.mobileNumber || '',
+      resumeUrl: data?.resumeUrl || '',
       about: data?.about ?? { title: '', description: '', image: '' },
       banner: data?.banner ?? { title: '', description: '', btnLabel: '' },
       educations: data.educations?.length ? data.educations : [PORTFOLIO_FORM_EDUCATIONS],

@@ -39,6 +39,8 @@ export const PORTFOLIO_FORM: PortfolioDetails = {
   lastName: '',
   contactEmail: '',
   location: '',
+  resumeUrl: '',
+  mobileNumber: '',
   about: {
     title: '',
     description: '',

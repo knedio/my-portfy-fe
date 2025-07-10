@@ -32,8 +32,9 @@ export interface PortfolioDetails {
   firstName: string;
   lastName: string;
   contactEmail: string;
-  mobileNumber?: string;
+  mobileNumber: string;
   location: string;
+  resumeUrl: string;
   about: {
     title: string;
     description: string;

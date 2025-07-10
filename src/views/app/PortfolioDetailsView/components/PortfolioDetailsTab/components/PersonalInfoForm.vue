@@ -15,5 +15,7 @@ import FormInput from '@/components/forms/FormInput.vue';
       placeholder="Your email address"
     />
     <FormInput name="location" label="Location" placeholder="Your location" />
+    <FormInput name="mobileNumber" label="Mobile Number" placeholder="Your mobile number" />
+    <FormInput name="resumeUrl" label="Resume" placeholder="Your resume" />
   </div>
 </template>

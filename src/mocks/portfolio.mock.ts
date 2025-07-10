@@ -86,4 +86,6 @@ export const mockPortfolio: PortfolioDetails = {
     },
   ],
   experiences: [],
+  resumeUrl: '',
+  mobileNumber: '',
 };
