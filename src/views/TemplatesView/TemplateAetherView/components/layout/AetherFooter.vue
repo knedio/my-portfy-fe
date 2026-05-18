@@ -9,7 +9,10 @@ const currentYear = new Date().getFullYear();
         <p>&copy; {{ currentYear }} Aether Portfolio. All rights reserved.</p>
         <div class="footer-meta">
           <span class="powered"
-            >Powered by <a href="https://portfy.dev" target="_blank" rel="noopener">Portfy</a></span
+            >Powered by
+            <a href="https://portfy-beige.vercel.app" target="_blank" rel="noopener"
+              >Portfy</a
+            ></span
           >
 
           <div class="social-links">
