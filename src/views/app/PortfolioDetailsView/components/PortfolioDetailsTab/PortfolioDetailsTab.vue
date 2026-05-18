@@ -18,7 +18,7 @@ import AboutForm from './components/AboutForm.vue';
 import BannerForm from './components/BannerForm.vue';
 import EducationForm from './components/EducationForm.vue';
 import ExperienceForm from './components/ExperienceForm.vue';
-import ProjectForm from './components/ExperienceForm.vue';
+import ProjectForm from './components/ProjectForm.vue';
 import SkillForm from './components/SkillForm.vue';
 
 const emit = defineEmits<{
